@@ -1,0 +1,41 @@
+--- FAIL: TestW8_DeleteMissingArticle (0.16s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x48 pc=0x7ff6c2fef854]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff6c3267500, 0x7ff6c36990a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff6c3267500?, 0x7ff6c36990a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*ArticleService).DeleteArticle(0xc000008540, {0xc0000116f5, 0xf}, 0x1)
+	<root>/internal/service/article.go:151 +0x34
+goflrealworld/internal/handler.(*ArticleHandler).DeleteArticle(0xc000072148, {0x7ff6c3365f80, 0xc00007b200}, 0xc00023ac80)
+	<root>/internal/handler/article.go:213 +0xf3
+net/http.HandlerFunc.ServeHTTP(0xc00023ab40?, {0x7ff6c3365f80?, 0xc00007b200?}, 0x7ff6c3361d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff6c3365f80, 0xc00007b200}, 0xc00023ab40)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff6c3364300?, {0x7ff6c3365f80?, 0xc00007b200?}, 0x7ff6c3258000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func8({0x7ff6c3365f80, 0xc00007b200}, 0xc00023ab40)
+	<root>/internal/app/router.go:106 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff6c329ca40?, {0x7ff6c3365f80?, 0xc00007b200?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff6c3365f80, 0xc00007b200}, 0xc00023ab40)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc00023aa00?, {0x7ff6c3365f80?, 0xc00007b200?}, 0xc000031d60?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc000128180, {0x7ff6c3365f80, 0xc00007b200}, 0xc00023a8c0)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc00016c200, {0x7ff6c32c0d9e, 0x6}, {0x7ff6c32cc420, 0x1d}, {0xc000006800, 0xfc}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW8_DeleteMissingArticle(0xc0001b41c0?)
+	<root>/internal/app/crash_test.go:96 +0x48
+testing.tRunner(0xc0001b41c0, 0x7ff6c32ea088)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	7.845s
+FAIL

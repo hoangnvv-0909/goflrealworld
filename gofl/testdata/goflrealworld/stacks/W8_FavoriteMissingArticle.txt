@@ -1,0 +1,41 @@
+--- FAIL: TestW8_FavoriteMissingArticle (0.10s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x0 pc=0x7ff78d2207e0]
+
+goroutine 7 [running]:
+testing.tRunner.func1.2({0x7ff78d497500, 0x7ff78d8c90a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff78d497500?, 0x7ff78d8c90a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*ArticleService).FavoriteArticle(0xc000008618, {0xc00026e5d3?, 0x7ff78d4f0943?}, 0x2)
+	<root>/internal/service/article.go:301 +0x80
+goflrealworld/internal/handler.(*ArticleHandler).FavoriteArticle(0xc0000721f0, {0x7ff78d595f80, 0xc00007bd00}, 0xc000252f00)
+	<root>/internal/handler/article.go:361 +0xe5
+net/http.HandlerFunc.ServeHTTP(0xc000252dc0?, {0x7ff78d595f80?, 0xc00007bd00?}, 0x7ff78d591d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff78d595f80, 0xc00007bd00}, 0xc000252dc0)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff78d594300?, {0x7ff78d595f80?, 0xc00007bd00?}, 0x7ff78d488000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func9({0x7ff78d595f80, 0xc00007bd00}, 0xc000252dc0)
+	<root>/internal/app/router.go:109 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff78d4cca40?, {0x7ff78d595f80?, 0xc00007bd00?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff78d595f80, 0xc00007bd00}, 0xc000252dc0)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc000252c80?, {0x7ff78d595f80?, 0xc00007bd00?}, 0xc000031d60?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc000128240, {0x7ff78d595f80, 0xc00007bd00}, 0xc000252b40)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc000172300, {0x7ff78d4f07c3, 0x4}, {0x7ff78d50127b, 0x26}, {0xc000006900, 0xf9}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW8_FavoriteMissingArticle(0xc0000036c0?)
+	<root>/internal/app/crash_test.go:101 +0x4e
+testing.tRunner(0xc0000036c0, 0x7ff78d51a090)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	2.646s
+FAIL

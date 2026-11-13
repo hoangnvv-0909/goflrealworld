@@ -1,0 +1,17 @@
+# Replace each TVn with that member's real account name (prefixed with @)
+# once the repository is created, then uncomment the lines.
+# Members and roles: see ke_hoach_3_nhom_fault_localization.tex, section 2.
+#
+# Contract packages: TV1 must review.
+# /internal/finding/     TV1
+# /internal/report/      TV1
+# /cmd/gofl/             TV1
+#
+# /internal/crashsig/    TV2 TV1
+# /internal/crashrank/   TV2 TV1
+# /internal/llm/         TV3
+# /internal/logprofile/  TV3
+# /internal/runner/      TV5 TV4
+# /internal/diffprof/    TV4 TV6
+# /editors/vscode/       TV7
+# /testdata/goflsample/  TV1

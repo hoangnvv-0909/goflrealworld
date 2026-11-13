@@ -1,0 +1,42 @@
+--- FAIL: TestW2_CreateArticlePunctuatedTitle (0.09s)
+panic: runtime error: slice bounds out of range [:40] with length 6 [recovered, repanicked]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff7bd5e0cc0, 0xc00001ac00})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff7bd5e0cc0?, 0xc00001ac00?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/utils.GenerateSlug({0xc000010ff0?, 0x30})
+	<root>/internal/utils/slug.go:28 +0x158
+goflrealworld/internal/service.(*ArticleService).CreateArticle(0xc0001a6108, {{{0xc000010ff0, 0x30}, {0x7ff7bd6afc00, 0x1}, {0x7ff7bd6afbf0, 0x1}, {0x0, 0x0, 0x0}}}, ...)
+	<root>/internal/service/article.go:42 +0x68
+goflrealworld/internal/handler.(*ArticleHandler).CreateArticle(0xc00019a100, {0x7ff7bd6a5f80, 0xc00007a4c0}, 0xc000142640)
+	<root>/internal/handler/article.go:48 +0x1cb
+net/http.HandlerFunc.ServeHTTP(0xc000142500?, {0x7ff7bd6a5f80?, 0xc00007a4c0?}, 0x7ff7bd6a1d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff7bd6a5f80, 0xc00007a4c0}, 0xc000142500)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff7bd6a4300?, {0x7ff7bd6a5f80?, 0xc00007a4c0?}, 0x7ff7bd598000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func6({0x7ff7bd6a5f80, 0xc00007a4c0}, 0xc000142500)
+	<root>/internal/app/router.go:100 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff7bd5dca40?, {0x7ff7bd6a5f80?, 0xc00007a4c0?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff7bd6a5f80, 0xc00007a4c0}, 0xc000142500)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc0001423c0?, {0x7ff7bd6a5f80?, 0xc00007a4c0?}, 0xc000031d48?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0001dc0c0, {0x7ff7bd6a5f80, 0xc00007a4c0}, 0xc000142280)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0001f2300, {0x7ff7bd6007c3, 0x4}, {0x7ff7bd60381c, 0xd}, {0xc000182200, 0xfc}, {0x7ff7bd5afd60, 0xc000174150})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW2_CreateArticlePunctuatedTitle(0xc000186380?)
+	<root>/internal/app/crash_test.go:35 +0x199
+testing.tRunner(0xc000186380, 0x7ff7bd62a050)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	3.143s
+FAIL

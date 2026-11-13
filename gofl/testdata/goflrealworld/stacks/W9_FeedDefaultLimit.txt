@@ -1,0 +1,38 @@
+--- FAIL: TestW9_FeedDefaultLimit (0.11s)
+panic: runtime error: integer divide by zero [recovered, repanicked]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff74fb17500, 0x7ff74ff49070})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff74fb17500?, 0x7ff74ff49070?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/handler.(*ArticleHandler).GetArticlesFeed(0xc000192100, {0x7ff74fc15f80, 0xc000189900}, 0xc000242dc0)
+	<root>/internal/handler/article.go:335 +0x71c
+net/http.HandlerFunc.ServeHTTP(0xc000242c80?, {0x7ff74fc15f80?, 0xc000189900?}, 0x7ff74fc11d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff74fc15f80, 0xc000189900}, 0xc000242c80)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff74fc14300?, {0x7ff74fc15f80?, 0xc000189900?}, 0x7ff74fb08000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func3({0x7ff74fc15f80, 0xc000189900}, 0xc000242c80)
+	<root>/internal/app/router.go:87 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff74fb4ca40?, {0x7ff74fc15f80?, 0xc000189900?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff74fc15f80, 0xc000189900}, 0xc000242c80)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc000242b40?, {0x7ff74fc15f80?, 0xc000189900?}, 0xc000031d60?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0001c80c0, {0x7ff74fc15f80, 0xc000189900}, 0xc000242a00)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0001e0300, {0x7ff74fb70547, 0x3}, {0x7ff74fb75d9b, 0x12}, {0xc000258100, 0xf9}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW9_FeedDefaultLimit(0xc0001b21c0?)
+	<root>/internal/app/crash_test.go:107 +0x4e
+testing.tRunner(0xc0001b21c0, 0x7ff74fb9a0a8)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	2.918s
+FAIL

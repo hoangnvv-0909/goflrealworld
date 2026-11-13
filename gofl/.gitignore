@@ -1,0 +1,10 @@
+/gofl
+/gofl.exe
+*.pprof
+*.prof
+*.test
+*.sarif
+/dist/
+editors/vscode/node_modules/
+editors/vscode/out/
+*.vsix

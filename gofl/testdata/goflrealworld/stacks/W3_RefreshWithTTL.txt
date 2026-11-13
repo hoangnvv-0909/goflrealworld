@@ -1,0 +1,34 @@
+--- FAIL: TestW3_RefreshWithTTL (0.08s)
+panic: interface conversion: interface {} is float64, not int [recovered, repanicked]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff7912ea120, 0xc0000a0720})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff7912ea120?, 0xc0000a0720?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/handler.(*AuthHandler).RefreshToken(0xc00018c9a0, {0x7ff7913e5f80, 0xc0000a6180}, 0xc0000f2500)
+	<root>/internal/handler/auth.go:133 +0x5b4
+net/http.HandlerFunc.ServeHTTP(0xc0000f23c0?, {0x7ff7913e5f80?, 0xc0000a6180?}, 0x7ff7913e1d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff7913e5f80, 0xc0000a6180}, 0xc0000f23c0)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff79131ca40?, {0x7ff7913e5f80?, 0xc0000a6180?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff7913e5f80, 0xc0000a6180}, 0xc0000f23c0)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc0000f2280?, {0x7ff7913e5f80?, 0xc0000a6180?}, 0xc000031d50?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0001ca0c0, {0x7ff7913e5f80, 0xc0000a6180}, 0xc0000f2140)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0001e0300, {0x7ff7913407c3, 0x4}, {0x7ff7913455e2, 0x11}, {0xc00025a000, 0xfc}, {0x7ff7912efd60, 0xc0000a03c0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW3_RefreshWithTTL(0xc0001b41c0?)
+	<root>/internal/app/crash_test.go:47 +0xaf
+testing.tRunner(0xc0001b41c0, 0x7ff79136a060)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	2.866s
+FAIL

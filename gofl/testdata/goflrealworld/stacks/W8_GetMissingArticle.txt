@@ -1,0 +1,43 @@
+--- FAIL: TestW8_GetMissingArticle (0.12s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x48 pc=0x7ff712dc0488]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff713037500, 0x7ff7134690a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff713037500?, 0x7ff7134690a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*ArticleService).buildArticleResponse(0xc00019e108, 0x0, 0x0)
+	<root>/internal/service/article.go:247 +0x28
+goflrealworld/internal/service.(*ArticleService).GetArticleBySlug(0xc00019e108, {0xc000011182?, 0x7ff713090943?}, 0x0)
+	<root>/internal/service/article.go:77 +0x45
+goflrealworld/internal/handler.(*ArticleHandler).GetArticle(0xc000192100, {0x7ff713135f80, 0xc00007a580}, 0xc000142500)
+	<root>/internal/handler/article.go:99 +0x10d
+net/http.HandlerFunc.ServeHTTP(0xc000174480?, {0x7ff713135f80?, 0xc00007a580?}, 0x28?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.OptionalJWTMiddleware.func13.1({0x7ff713135f80, 0xc00007a580}, 0xc000142500)
+	<root>/internal/middleware/jwt.go:70 +0x171
+net/http.HandlerFunc.ServeHTTP(0x7ff713134300?, {0x7ff713135f80?, 0xc00007a580?}, 0x7ff713028000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func5({0x7ff713135f80, 0xc00007a580}, 0xc000142500)
+	<root>/internal/app/router.go:95 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff71306ca40?, {0x7ff713135f80?, 0xc00007a580?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff713135f80, 0xc00007a580}, 0xc000142500)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc0001423c0?, {0x7ff713135f80?, 0xc00007a580?}, 0xc000031d60?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0001ca0c0, {0x7ff713135f80, 0xc00007a580}, 0xc000142280)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0001e2300, {0x7ff713090547, 0x3}, {0x7ff71309c420, 0x1d}, {0x0, 0x0}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW8_GetMissingArticle(0xc0001b41c0?)
+	<root>/internal/app/crash_test.go:85 +0x46
+testing.tRunner(0xc0001b41c0, 0x7ff7130ba098)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	3.404s
+FAIL

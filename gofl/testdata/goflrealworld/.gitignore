@@ -1,0 +1,5 @@
+realworld.db
+crash.log
+*.pprof
+*.test
+*.test.exe

@@ -1,0 +1,11 @@
+panic: runtime error: index out of range [1] with length 1
+
+goroutine 25 [running]:
+goflrealworld/internal/service.mentions({0xc00001bb18?, 0x0?})
+	<root>/internal/service/comment.go:126 +0x170
+goflrealworld/internal/service.notifyMentions(0x3, {0xc00001bb18?, 0x0?})
+	<root>/internal/service/comment.go:117 +0x77
+created by goflrealworld/internal/service.(*CommentService).CreateComment in goroutine 7
+	<root>/internal/service/comment.go:78 +0x2bb
+FAIL	goflrealworld/internal/app	2.904s
+FAIL

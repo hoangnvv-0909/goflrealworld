@@ -1,0 +1,41 @@
+--- FAIL: TestW8_UpdateMissingArticle (0.10s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x48 pc=0x7ff697c2f220]
+
+goroutine 7 [running]:
+testing.tRunner.func1.2({0x7ff697ea7500, 0x7ff6982d90a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff697ea7500?, 0x7ff6982d90a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*ArticleService).UpdateArticle(0xc000008618, {0xc00031a102, 0xf}, {{0x0, 0x0, 0xc00018c080, {0x0, 0x0, 0x0}}}, 0x1)
+	<root>/internal/service/article.go:89 +0x80
+goflrealworld/internal/handler.(*ArticleHandler).UpdateArticle(0xc0000721f0, {0x7ff697fa5f80, 0xc00031e040}, 0xc000328500)
+	<root>/internal/handler/article.go:157 +0x23c
+net/http.HandlerFunc.ServeHTTP(0xc0003283c0?, {0x7ff697fa5f80?, 0xc00031e040?}, 0x7ff697fa1d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff697fa5f80, 0xc00031e040}, 0xc0003283c0)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff697fa4300?, {0x7ff697fa5f80?, 0xc00031e040?}, 0x7ff697e98000?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.func7({0x7ff697fa5f80, 0xc00031e040}, 0xc0003283c0)
+	<root>/internal/app/router.go:103 +0x99
+net/http.HandlerFunc.ServeHTTP(0x7ff697edca40?, {0x7ff697fa5f80?, 0xc00031e040?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff697fa5f80, 0xc00031e040}, 0xc0003283c0)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc000328280?, {0x7ff697fa5f80?, 0xc00031e040?}, 0xc000031d48?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc000128240, {0x7ff697fa5f80, 0xc00031e040}, 0xc000328140)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc000176300, {0x7ff697f0054a, 0x3}, {0x7ff697f0c420, 0x1d}, {0xc000006800, 0xfc}, {0x7ff697eafd60, 0xc000304090})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW8_UpdateMissingArticle(0xc0000036c0?)
+	<root>/internal/app/crash_test.go:90 +0x107
+testing.tRunner(0xc0000036c0, 0x7ff697f2a0a0)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	3.132s
+FAIL

@@ -1,0 +1,22 @@
+[
+  {"id":"C1","cmd":"crash","kind":"nil pointer dereference","file":"crash/crash.go","func":"EmailOf","lines":[16],"trigger":"go test ./crash -run 'TestEmailOfNilProfile|TestProcessChain'"},
+  {"id":"C2","cmd":"crash","kind":"index out of range","file":"crash/crash.go","func":"Nth","lines":[21],"trigger":"go test ./crash -run TestNth"},
+  {"id":"C3","cmd":"crash","kind":"assignment to nil map","file":"crash/crash.go","func":"Registry.Inc","lines":[29],"trigger":"go test ./crash -run TestInc"},
+  {"id":"C4","cmd":"crash","kind":"integer divide by zero","file":"crash/crash.go","func":"Average","lines":[38],"trigger":"go test ./crash -run TestAverageEmpty"},
+  {"id":"C5","cmd":"crash","kind":"interface conversion (type assertion)","file":"crash/crash.go","func":"Describe","lines":[43],"trigger":"go test ./crash -run TestDescribe"},
+  {"id":"C6","cmd":"crash","kind":"close of closed channel","file":"crash/crash.go","func":"Finish","lines":[49],"trigger":"go test ./crash -run TestFinishTwice"},
+  {"id":"C7","cmd":"crash","kind":"fatal: concurrent map writes","file":"crash/crash.go","func":"Counter.Add","lines":[68],"trigger":"GOFL_RUN_FATAL=1 go test ./crash -run TestConcurrentMap","note":"fatal error, not a recoverable panic; non-deterministic"},
+  {"id":"C8","cmd":"crash","kind":"index out of range (deep stack, 6 frames)","file":"crash/hard.go","func":"parseKV","lines":[42],"trigger":"go test ./crash -run TestRunMissingEquals","hard":"deep stack across five functions"},
+  {"id":"C9","cmd":"crash","kind":"nil pointer dereference (one root cause, three stacks)","file":"crash/hard.go","func":"NewSession","lines":[57],"trigger":"go test ./crash -run TestLoginAnon","related_triggers":["go test ./crash -run TestLogoutAnon","go test ./crash -run TestRefreshAnon"],"hard":"crash point is Token, fault is in the constructor; three entry points differ in the 2nd frame so they merge only at level 4 (same crash-point file)","crash_point":{"file":"crash/hard.go","func":"Session.Token","lines":[63]}},
+  {"id":"C10","cmd":"crash","kind":"index out of range (crash far from fix)","file":"crash/hard.go","func":"NewCache","lines":[81],"trigger":"go test ./crash -run TestCacheZeroCapacity","hard":"crash point is Cache.evict, fault is the constructor check","crash_point":{"file":"crash/hard.go","func":"Cache.evict","lines":[97]}},
+  {"id":"C11","cmd":"crash","kind":"panic(err) from generic helper (thin wrapper)","file":"crash/hard.go","func":"ParsePort","lines":[115],"trigger":"go test ./crash -run TestParsePortEmpty","hard":"top frame is the helper must[...], useless for localization","crash_point":{"file":"crash/hard.go","func":"must","lines":[108]}},
+  {"id":"C12","cmd":"crash","kind":"nil pointer dereference in recursion (traceback elided)","file":"crash/hard.go","func":"Node.Total","lines":[130],"trigger":"go test ./crash -run TestTotalLongList","hard":"runtime prints '...N frames elided...' for deep recursion"},
+  {"id":"C13","cmd":"crash","kind":"index out of range inside a goroutine","file":"crash/hard.go","func":"Fanout.func1","lines":[144],"trigger":"go test ./crash -run TestFanout","hard":"no testing.tRunner frame; stack ends with 'created by'","note":"kills the whole test binary"},
+  {"id":"P1","cmd":"perf","kind":"N+1 query (simulated)","file":"perf/perf.go","func":"LoadOrders","lines":[52],"trigger":"go test ./perf -bench LoadOrders -run ^$"},
+  {"id":"P2","cmd":"perf","kind":"quadratic loop","file":"perf/perf.go","func":"Dedup","lines":[64],"trigger":"go test ./perf -bench Dedup -run ^$"},
+  {"id":"P3","cmd":"perf","kind":"repeated serialization","file":"perf/perf.go","func":"Fingerprints","lines":[89],"trigger":"go test ./perf -bench Fingerprints -run ^$"},
+  {"id":"S1","cmd":"sem","kind":"boundary (off-by-one)","file":"sem/sem.go","func":"Pages","lines":[12],"failing":["TestPagesPartial"],"passing":["TestPagesExact"]},
+  {"id":"S2","cmd":"sem","kind":"timezone","file":"sem/sem.go","func":"SameDay","lines":[17,18],"failing":["TestSameDayLocal"],"passing":["TestSameDayUTC"]},
+  {"id":"S3","cmd":"sem","kind":"wrong comparison operator","file":"sem/sem.go","func":"MaxOf","lines":[26],"failing":["TestMaxOfMany"],"passing":["TestMaxOfSingle"]},
+  {"id":"S4","cmd":"sem","kind":"sign error (numeric overflow)","file":"sem/sem.go","func":"Softmax","lines":[42],"failing":["TestSoftmaxLarge"],"passing":["TestSoftmaxSmall"]}
+]

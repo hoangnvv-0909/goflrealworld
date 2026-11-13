@@ -1,0 +1,35 @@
+--- FAIL: TestW1_CurrentUserDeleted (0.08s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x0 pc=0x7ff6d651a4bd]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff6d6787500, 0x7ff6d6bb90a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff6d6787500?, 0x7ff6d6bb90a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/handler.(*UserHandler).GetCurrentUser(0xc0000ae120, {0x7ff6d6885f80, 0xc000099900}, 0xc000031bd8?)
+	<root>/internal/handler/user.go:147 +0xbd
+net/http.HandlerFunc.ServeHTTP(0xc00024ec80?, {0x7ff6d6885f80?, 0xc000099900?}, 0x7ff6d6881d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff6d6885f80, 0xc000099900}, 0xc00024ec80)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff6d67bca40?, {0x7ff6d6885f80?, 0xc000099900?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff6d6885f80, 0xc000099900}, 0xc00024ec80)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc00024eb40?, {0x7ff6d6885f80?, 0xc000099900?}, 0xc000031d58?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0000d60c0, {0x7ff6d6885f80, 0xc000099900}, 0xc00024ea00)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0000ee300, {0x7ff6d67e0547, 0x3}, {0x7ff6d67e1cc7, 0x9}, {0xc0000d8120, 0x101}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW1_CurrentUserDeleted(0xc00008e380?)
+	<root>/internal/app/crash_test.go:27 +0x66
+testing.tRunner(0xc00008e380, 0x7ff6d680a048)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	3.069s
+FAIL

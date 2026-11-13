@@ -1,0 +1,38 @@
+2026/11/13 15:05:02 comment 1 on article 1: delete requested by user 2
+--- FAIL: TestW5_DeleteOwnComment (0.09s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x18 pc=0x7ff64ac8112e]
+
+goroutine 7 [running]:
+testing.tRunner.func1.2({0x7ff64aef7500, 0x7ff64b3290a0})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff64aef7500?, 0x7ff64b3290a0?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*CommentService).DeleteComment(0xc00002ccf0?, 0x1?, 0x2?)
+	<root>/internal/service/comment.go:95 +0x18e
+goflrealworld/internal/handler.(*CommentHandler).DeleteComment(0xc000072200, {0x7ff64aff5f80, 0xc0000ac100}, 0xc0000f0500)
+	<root>/internal/handler/comment.go:140 +0x105
+net/http.HandlerFunc.ServeHTTP(0xc0000f03c0?, {0x7ff64aff5f80?, 0xc0000ac100?}, 0x7ff64aff1d80?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/app.NewRouter.JWTMiddleware.func12.1({0x7ff64aff5f80, 0xc0000ac100}, 0xc0000f03c0)
+	<root>/internal/middleware/jwt.go:55 +0x15b
+net/http.HandlerFunc.ServeHTTP(0x7ff64af2ca40?, {0x7ff64aff5f80?, 0xc0000ac100?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff64aff5f80, 0xc0000ac100}, 0xc0000f03c0)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc0000f0280?, {0x7ff64aff5f80?, 0xc0000ac100?}, 0xc000031d38?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc000128240, {0x7ff64aff5f80, 0xc0000ac100}, 0xc0000f0140)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc000174300, {0x7ff64af50d9e, 0x6}, {0xc0000b6300, 0x38}, {0xc000006a00, 0xf9}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW5_DeleteOwnComment(0xc000003880?)
+	<root>/internal/app/crash_test.go:62 +0xe8
+testing.tRunner(0xc000003880, 0x7ff64af7a070)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	3.154s
+FAIL

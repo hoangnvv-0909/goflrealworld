@@ -1,0 +1,32 @@
+--- FAIL: TestW4_TagsAfterNewArticle (0.09s)
+panic: assignment to entry in nil map [recovered, repanicked]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x7ff7a11c7560, 0x7ff7a15f9050})
+	<goroot>/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1875 +0x35b
+panic({0x7ff7a11c7560?, 0x7ff7a15f9050?})
+	<goroot>/src/runtime/panic.go:783 +0x132
+goflrealworld/internal/service.(*TagService).GetPopularTags(0xc00019e0f0, 0x7ff7a1220c5b?)
+	<root>/internal/service/tag.go:47 +0x1b2
+goflrealworld/internal/handler.(*TagHandler).GetTags(0xc000192108, {0x7ff7a12c5f80, 0xc000189a40}, 0x140?)
+	<root>/internal/handler/tag.go:44 +0xc5
+net/http.HandlerFunc.ServeHTTP(0x7ff7a11fca40?, {0x7ff7a12c5f80?, 0xc000189a40?}, 0x1c?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+goflrealworld/internal/middleware.CORS.func1({0x7ff7a12c5f80, 0xc000189a40}, 0xc0002437c0)
+	<root>/internal/middleware/cors.go:19 +0x282
+net/http.HandlerFunc.ServeHTTP(0xc000243680?, {0x7ff7a12c5f80?, 0xc000189a40?}, 0xc000031d40?)
+	<goroot>/src/net/http/server.go:2322 +0x29
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc0001cc0c0, {0x7ff7a12c5f80, 0xc000189a40}, 0xc000243540)
+	<modcache>/github.com/gorilla/mux@v1.8.1/mux.go:212 +0x1e2
+goflrealworld/internal/testutil.(*Env).Do(0xc0001e4300, {0x7ff7a1220547, 0x3}, {0x7ff7a1221cd9, 0x9}, {0x0, 0x0}, {0x0, 0x0})
+	<root>/internal/testutil/testutil.go:188 +0x41a
+goflrealworld/internal/app_test.TestW4_TagsAfterNewArticle(0xc0001b41c0?)
+	<root>/internal/app/crash_test.go:56 +0x25a
+testing.tRunner(0xc0001b41c0, 0x7ff7a124a068)
+	<goroot>/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1997 +0x44b
+FAIL	goflrealworld/internal/app	2.281s
+FAIL
