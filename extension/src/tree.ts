@@ -4,7 +4,7 @@
 import * as vscode from 'vscode';
 import { Location, Report } from './model';
 import { byRank } from './parse';
-import { Session, shortFunc } from './notes';
+import { Session, shortFunc, tagOf } from './notes';
 
 export class Node extends vscode.TreeItem {
   constructor(label: string, public children: Node[] = [], loc?: Location, command?: vscode.Command) {
@@ -36,7 +36,7 @@ function expanded(n: Node): Node {
 export function buildTree(i: TreeInput): Node[] {
   const out: Node[] = [];
   const s = i.session;
-  const tag = s?.command === 'perf' ? 'hotspot' : 'suspect';
+  const tag = tagOf(s?.command ?? 'crash');
 
   if (s) {
     const files = s.files.map((f, idx) => {

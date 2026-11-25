@@ -17,10 +17,11 @@ import { Notes } from './decorations';
 import { filesFromReport } from './hints';
 import { diffLines } from './linediff';
 import { LOCALIZE_FILE, parseLocalize } from './localize';
-import { AgentPrompt, Location, Report } from './model';
-import { noteFiles, Session } from './notes';
+import { Analysis, AgentPrompt, Location, Report } from './model';
+import { noteFiles, Session, tagOf } from './notes';
 import { parseAgentPrompt, parseReport, ReportError } from './parse';
 import { relativeToRoot, resolveFile } from './paths';
+import { perfAnalysis, pkgFromArgs } from './perfprompt';
 import { parseHotspots, parsePaths, PerfError, perfStatus, perfToReport } from './perf';
 import { execGofl, firstLine } from './runner';
 import { GoflTree } from './tree';
@@ -221,35 +222,50 @@ export function activate(ctx: vscode.ExtensionContext): void {
     );
     if (!done) return;
 
+    await present(
+      {
+        command: 'crash',
+        mode: done.prompt.mode,
+        prompt: done.prompt.prompt,
+        files: done.prompt.files,
+        summary: `${done.prompt.events} crash event(s), ${done.prompt.files.length} suspect file(s)`,
+      },
+      done.rep,
+    );
+  };
+
+  /**
+   * The one way both commands show their result: the same session, notes, tree,
+   * prompt and messages for gofl crash and gofl perf.
+   */
+  const present = async (a: Analysis, rep: Report | undefined) => {
+    const tag = tagOf(a.command);
     session = {
-      command: 'crash',
-      mode: done.prompt.mode,
+      command: a.command,
+      mode: a.mode,
       createdAt: new Date().toISOString(),
-      files: done.prompt.files,
-      snapshots: snapshotFiles(done.prompt.files.map((f) => f.file)),
-      prompt: done.prompt.prompt,
+      files: a.files,
+      snapshots: snapshotFiles(a.files.map((f) => f.file)),
+      prompt: a.prompt,
     };
-    report = done.rep;
+    report = rep;
     await loadAgent(false);
     await save();
     refresh();
     await vscode.commands.executeCommand('goflResults.focus');
     await showPrompt();
-    const missing = done.prompt.files.filter((f) => !(f.file in session!.snapshots)).map((f) => f.file);
+    const missing = a.files.filter((f) => !(f.file in session!.snapshots)).map((f) => f.file);
     if (missing.length) {
-      vscode.window.showWarningMessage(`gofl: not found in the open folder: ${missing.join(', ')}. Open the project root where the crash happened.`);
+      vscode.window.showWarningMessage(`gofl: not found in the open folder: ${missing.join(', ')}. Open the project root where gofl was run.`);
     }
-    const again = done.prompt.files.length === 0 ? ' No suspect file was found in this log.' : '';
-    const pick = await vscode.window.showInformationMessage(
-      `gofl: Agent prompt ready (${done.prompt.mode}, ${done.prompt.events} crash event(s), ${done.prompt.files.length} suspect file(s)).${again}`,
-      'Copy prompt',
-    );
+    const none = a.files.length === 0 ? ` No ${tag} file was found.` : '';
+    const pick = await vscode.window.showInformationMessage(`gofl: Agent prompt ready (${a.mode}, ${a.summary}).${none}`, 'Copy prompt');
     if (pick === 'Copy prompt') await copyPrompt();
   };
 
   const showPrompt = async () => {
     if (!session?.prompt) {
-      await showError('there is no prompt yet. Run "gofl: Generate Agent prompt from a crash log".');
+      await showError('there is no prompt yet. Run "gofl: Generate Agent prompt from a crash log" or "gofl: Profile benchmark".');
       return;
     }
     const doc = await vscode.workspace.openTextDocument({ language: 'markdown', content: session.prompt });
@@ -330,7 +346,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
   // ---- other commands -----------------------------------------------------
 
-  /** Shows a report (from a file, or from gofl perf) with the same notes. */
+  /** Shows a report loaded from a JSON file (no prompt) with the same notes. */
   const showReport = async (text: string, root: string | undefined) => {
     try {
       report = parseReport(text);
@@ -426,7 +442,16 @@ export function activate(ctx: vscode.ExtensionContext): void {
         vscode.window.showInformationMessage('gofl: no hotspot found (no function got slower between the two sizes).');
         return;
       }
-      await showReport(JSON.stringify(rep), cwd);
+      const agentMode = cfg().get<string>('agentMode', 'e1') === 'e0' ? 'E0' : 'E1';
+      const a = perfAnalysis({
+        report: rep,
+        mode: agentMode,
+        bench: mode.bench,
+        sizes: mode.sizes,
+        pkg: pkgFromArgs(cfg().get<string[]>('perfArgs', [])),
+        repro: cfg().get<string[]>('repro', []),
+      });
+      await present(a, rep);
       const note = (rep.notes ?? []).find((n) => n.startsWith('not under'));
       if (note) vscode.window.showWarningMessage(`gofl: ${note}`);
     } finally {
@@ -434,11 +459,24 @@ export function activate(ctx: vscode.ExtensionContext): void {
     }
   };
 
+  /** One entry for both: a crash log (gofl crash) or a benchmark (gofl perf). */
+  const analyzeAny = async () => {
+    const pick = await vscode.window.showQuickPick(
+      [
+        { id: 'crash', label: '$(bug) A crash', description: 'stack trace, log file or go test run → Agent prompt' },
+        { id: 'perf', label: '$(dashboard) A slow benchmark', description: 'benchmark or two CPU profiles → Agent prompt' },
+      ],
+      { placeHolder: 'What should gofl analyse?' },
+    );
+    if (pick?.id === 'crash') await analyze(false);
+    else if (pick?.id === 'perf') await profile();
+  };
+
   const mode = async () => {
     const pick = await vscode.window.showQuickPick(
       [
         { label: 'E1', description: 'crash facts plus the top 3 files gofl suspects', value: 'e1' },
-        { label: 'E0', description: 'crash facts only (the control)', value: 'e0' },
+        { label: 'E0', description: 'facts only, no ranking (the control)', value: 'e0' },
       ],
       { placeHolder: 'What should the Agent prompt contain?' },
     );
@@ -470,6 +508,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     }),
     vscode.workspace.onDidSaveTextDocument(refreshSoon),
     vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('gofl') && refresh()),
+    cmd('gofl.analyze', analyzeAny),
     cmd('gofl.analyzeLog', () => analyze(false)),
     cmd('gofl.analyzeSelection', () => analyze(true)),
     cmd('gofl.copyPrompt', copyPrompt),

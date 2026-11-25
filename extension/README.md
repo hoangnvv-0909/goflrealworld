@@ -35,11 +35,11 @@ Kiểm tra nhanh: `gofl crash -h` phải liệt kê `-agent-prompt`. Nếu khôn
 cd D:\NL&TKTT\extension
 npm install
 npm test                 # 41 test, không cần mở VS Code
-npm run package          # tạo gofl-vscode-0.2.0.vsix
-code --install-extension gofl-vscode-0.2.0.vsix
+npm run package          # tạo gofl-vscode-0.3.0.vsix
+code --install-extension gofl-vscode-0.3.0.vsix
 ```
 
-Trong thư mục này đã có sẵn `gofl-vscode-0.2.0.vsix`, nên có thể cài ngay bằng lệnh cuối. Cài xong, khởi động lại VS Code.
+Trong thư mục này đã có sẵn `gofl-vscode-0.3.0.vsix`, nên có thể cài ngay bằng lệnh cuối. Cài xong, khởi động lại VS Code.
 
 Muốn thử từ mã nguồn mà không cài: mở thư mục `extension` trong VS Code, bấm **F5**, cửa sổ mới (Extension Development Host) sẽ có extension.
 
@@ -51,6 +51,10 @@ Muốn thử từ mã nguồn mà không cài: mở thư mục `extension` trong
 > ```
 
 ## 2. Cách dùng
+
+### 2.0. Một cửa vào cho cả C và E
+
+Nút lấp lánh ở thanh tiêu đề view **gofl** (hoặc lệnh **gofl: Analyze (crash or slow benchmark)**) hỏi bạn phân tích *a crash* hay *a slow benchmark*. Hai nhánh khác nhau ở đầu vào (log hay benchmark), còn phần sau **dùng chung một đường** (`present` trong `extension.ts`): cùng `Analysis` (file cần đánh dấu, prompt, mode), cùng `Session`, cùng ghi chú, cây, diff, cùng thông báo "Agent prompt ready" và nút *Copy prompt*, cùng `gofl.agentMode` (E0/E1) và `gofl.repro`. Chỉ khác chữ: bài C gọi là *suspect*, bài E gọi là *hotspot* (một hàm `tagOf` duy nhất).
 
 ### 2.1. Sinh prompt từ crash log
 
@@ -102,7 +106,7 @@ Cài đặt `gofl.agentMode`, hoặc lệnh **gofl: Choose prompt mode (E0 or E1
 | `e1` (mặc định) | Thông tin crash, stack, lệnh tái hiện, **và top 3 file gofl nghi ngờ** | Dùng gofl như thường |
 | `e0` | Chỉ thông tin crash, stack, lệnh tái hiện | Đối chứng trong thí nghiệm ở `plan_crash/KE_HOACH_BAI_C.md` |
 
-Ở E0, các file vẫn được tô màu cam, nhưng chú thích hiện "no (E0, crash facts only)" để bạn nhớ Agent không được gợi ý.
+Ở E0, các file vẫn được tô màu cam, nhưng chú thích hiện "no (E0, facts only)" để bạn nhớ Agent không được gợi ý.
 
 ## 3. Cài đặt
 
@@ -170,7 +174,11 @@ Binary E khác binary C. Build từ `plan_efficency/gofl-run/src`: `go build -tr
 5. Đường dẫn trong file pprof là của máy tạo ra nó. Nếu không nằm trong thư mục đang mở, extension thử khớp phần đuôi (ít nhất hai đoạn) với file trong thư mục; không khớp được thì báo cảnh báo.
 6. Lỗi của `gofl perf` (`NO_BENCH`, `NO_MODULE`, `BUILD_FAIL`, ...) hiện kèm lý do cụ thể ở thông báo và **Output → gofl**.
 
-Chưa có prompt cho Agent ở bài E. Phần đó dự kiến làm riêng (`src/perfprompt.ts`), dùng chung `Session`.
+7. **Prompt cho Agent** (`src/perfprompt.ts`, sinh ngay trong extension, không cần cờ Go): sau khi profile xong, extension tạo prompt và hiện thông báo *Copy prompt*; xem lại bằng **gofl: Show Agent prompt**. Dùng chung `gofl.agentMode`:
+   - `e1`: sự kiện benchmark (tên, hai cỡ, lệnh `go test -bench`), **cộng top 3 file hotspot** kèm bằng chứng (thời gian mỗi thao tác tăng bao nhiêu, % đóng góp) và đường gọi.
+   - `e0`: chỉ sự kiện benchmark, đối chứng.
+   - Prompt yêu cầu Agent ghi `gofl-localize.json` trước khi sửa, nên màu xanh dương và diff xanh/đỏ hoạt động như bài C. Lệnh đo lấy `-pkg` từ `gofl.perfArgs`, thêm lệnh nào khác qua `gofl.repro`.
+   - Ở chế độ hai file pprof không có benchmark nên prompt bảo Agent tự tìm hoặc viết benchmark.
 
 ## 7. Giới hạn
 

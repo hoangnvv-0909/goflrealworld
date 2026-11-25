@@ -48,6 +48,19 @@ export interface FileHint {
   funcs: FuncHint[];
 }
 
+/**
+ * What both commands hand to the UI, so crash and perf are shown the same way:
+ * the files to mark, the Agent prompt and the mode it was built in.
+ */
+export interface Analysis {
+  command: Command;
+  mode: 'E0' | 'E1';
+  prompt: string;
+  files: FileHint[];
+  /** One line for the "prompt ready" message. */
+  summary: string;
+}
+
 /** Output of `gofl crash -agent-prompt -format json` (cmd/gofl agentPromptDoc). */
 export interface AgentPrompt {
   version: number;
