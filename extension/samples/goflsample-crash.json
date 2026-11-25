@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "command": "crash",
+  "findings": [
+    {
+      "location": { "file": "crash/crash.go", "line": 21, "func": "goflsample/crash.Nth" },
+      "score": 1.0,
+      "rank": 1,
+      "evidence": [
+        { "kind": "crash-group", "detail": "group G1: 2 crashes, merged at level 3" },
+        { "kind": "stack-rank", "detail": "crash point in every stack of the group" }
+      ],
+      "flow": [
+        { "file": "crash/crash_test.go", "line": 23, "func": "goflsample/crash.TestNth" },
+        { "file": "crash/crash.go", "line": 21, "func": "goflsample/crash.Nth" }
+      ]
+    },
+    {
+      "location": { "file": "crash/crash.go", "line": 29, "func": "goflsample/crash.(*Registry).Inc" },
+      "score": 0.5,
+      "rank": 2,
+      "evidence": [ { "kind": "crash-group", "detail": "group G2: 1 crash" } ]
+    },
+    {
+      "location": { "file": "crash/hard.go", "line": 63, "func": "goflsample/crash.(*Session).Token" },
+      "score": 0.5,
+      "rank": 2,
+      "evidence": [ { "kind": "crash-group", "detail": "group G3: 3 crashes, merged at level 4 (same top-frame file)" } ]
+    }
+  ]
+}

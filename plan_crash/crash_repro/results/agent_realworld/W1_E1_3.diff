@@ -1,0 +1,15 @@
+### internal/service/user.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-4111720747/internal/service/user.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1333655140/internal/service/user.go
+index 8ef8b22..4ebad4f 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-4111720747/internal/service/user.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1333655140/internal/service/user.go
+@@ -3,0 +4 @@ import (
++	"errors"
+@@ -81,2 +82 @@ func (s *UserService) GetUserByID(id int) (*model.User, error) {
+-	// A token can outlive its user: treat "not found" as "no user", not as a failure.
+-	if err != nil && err.Error() != "user not found" {
++	if err != nil {
+@@ -84,0 +85,3 @@ func (s *UserService) GetUserByID(id int) (*model.User, error) {
++	if user == nil {
++		return nil, errors.New("user not found")
++	}

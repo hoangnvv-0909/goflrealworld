@@ -1,0 +1,11 @@
+### internal/utils/slug.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-1765173840/internal/utils/slug.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3430339252/internal/utils/slug.go
+index 20f6e0a..0f7cf6a 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-1765173840/internal/utils/slug.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3430339252/internal/utils/slug.go
+@@ -27,2 +27,3 @@ func GenerateSlug(title string) string {
+-	if len(title) > maxSlugBase {
+-		slug = strings.TrimRight(slug[:maxSlugBase], "-")
++	// (the slug may be shorter than the title, so check the slug itself)
++	if r := []rune(slug); len(r) > maxSlugBase {
++		slug = strings.TrimRight(string(r[:maxSlugBase]), "-")

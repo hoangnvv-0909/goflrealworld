@@ -1,0 +1,28 @@
+[
+  {
+    "rank": 1,
+    "function": "example.com/app/internal/report.BuildRows",
+    "file": "internal/report/build.go",
+    "baseline_self_seconds": 0.30,
+    "scaled_self_seconds": 4.20,
+    "delta_self_seconds": 3.90,
+    "ndc": 0.71,
+    "baseline_samples": 30,
+    "scaled_samples": 420,
+    "baseline_occurrences": 2,
+    "scaled_occurrences": 3
+  },
+  {
+    "rank": 2,
+    "function": "example.com/app/internal/report.format",
+    "file": "internal/report/format.go",
+    "baseline_self_seconds": 0.10,
+    "scaled_self_seconds": 1.70,
+    "delta_self_seconds": 1.60,
+    "ndc": 0.29,
+    "baseline_samples": 10,
+    "scaled_samples": 170,
+    "baseline_occurrences": 1,
+    "scaled_occurrences": 1
+  }
+]

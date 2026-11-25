@@ -1,0 +1,37 @@
+{
+  "Hash": "f97fab62ef04e5d4",
+  "Exception": "runtime error: index out of range [#] with length #",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.parseKV",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 42
+    },
+    {
+      "Func": "goflsample/crash.stageBuild",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 34
+    },
+    {
+      "Func": "goflsample/crash.stageClean",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 28
+    },
+    {
+      "Func": "goflsample/crash.stageSplit",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 19
+    },
+    {
+      "Func": "goflsample/crash.Run",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 17
+    },
+    {
+      "Func": "goflsample/crash.TestRunMissingEquals",
+      "File": "\u003croot\u003e/crash/hard_test.go",
+      "Line": 7
+    }
+  ]
+}

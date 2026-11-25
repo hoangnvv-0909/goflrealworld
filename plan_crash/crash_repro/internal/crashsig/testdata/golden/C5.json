@@ -1,0 +1,17 @@
+{
+  "Hash": "4fa4adca899b17bc",
+  "Exception": "interface conversion: interface {} is int, not string",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.Describe",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 43
+    },
+    {
+      "Func": "goflsample/crash.TestDescribe",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 29
+    }
+  ]
+}

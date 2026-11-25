@@ -1,0 +1,17 @@
+{
+  "Hash": "b21c21c157306ff3",
+  "Exception": "runtime error: integer divide by zero",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.Average",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 38
+    },
+    {
+      "Func": "goflsample/crash.TestAverageEmpty",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 27
+    }
+  ]
+}

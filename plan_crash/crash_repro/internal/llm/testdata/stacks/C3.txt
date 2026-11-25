@@ -1,0 +1,20 @@
+--- FAIL: TestInc (0.00s)
+panic: assignment to entry in nil map [recovered, repanicked]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x7ff60b070ac0, 0x7ff60b1d8d90})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff60b070ac0?, 0x7ff60b1d8d90?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+goflsample/crash.(*Registry).Inc(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash.go:29
+goflsample/crash.TestInc(0xc000003500?)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:25 +0x28
+testing.tRunner(0xc000003500, 0x7ff60b0a9a68)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+FAIL	goflsample/crash	0.387s
+FAIL

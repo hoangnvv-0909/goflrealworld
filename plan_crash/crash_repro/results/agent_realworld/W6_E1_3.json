@@ -1,0 +1,35 @@
+{
+  "Case": "W6",
+  "Mode": "E1",
+  "Run": 3,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 26.9312479,
+  "CostUSD": 0.08037079999999999,
+  "Turns": 6,
+  "InputTokens": 170918,
+  "OutputTokens": 1178,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/comment.go",
+      "line": 126,
+      "func": "mentions"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "mentions"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":11819,\"stop_reason\":\"end_turn\",\"session_id\":\"354c3f2c-fed5-4657-b407-d71715e26e09\",\"total_cost_usd\":0.08037079999999999,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":13200,\"cache_read_input_tokens\":157708,\"output_tokens\":1178,\"output_tokens_details\":{\"thinking_tokens\":73},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13200,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":447,\"cache_read_input_tokens\":36572,\"cache_creation_input_tokens\":205,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":205},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":10,\"outputTokens\":1178,\"cacheReadInputTokens\":157708,\"cacheCreationInputTokens\":13200,\"webSearchRequests\":0,\"costUSD\":0.08037079999999999,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":73,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":13200,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":6,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the crash. `go test ./internal/app -run '^TestW6_' -count=1` now passes. The full `go test ./...` still fails in `internal/app`, in `TestW1_CurrentUserDeleted` and possibly other tests. I didn't investigate that, since it looks unrelated to this crash and I didn't check whether it failed before my change.\\n\\n**Root cause:** `mentions()` in `internal/service/comment.go` read `word[1]` for any word starting with `@`. A comment containing a bare `@` token (length 1) therefore panicked with index out of range. The panic happened in the background `notifyMentions` goroutine started by `CreateComment`.\\n\\n**Fix:** I added a `len(word) \u003e 1` check before reading `word[1]`. A lone `@` is now skipped as \\\"not a mention\\\", so the check sits at the point where the bad assumption was made.\\n\\nI wrote `gofl-localize.json` in the project root before the edit, listing `mentions` at `internal/service/comment.go:126` as the location to fix.\\n\\n`DeleteComment` in the same file has a separate bug: line 87 declares a new `comment` that shadows the outer one. For an ID ≤ 0, or even a valid one, the outer `comment` stays nil, so `comment.AuthorID` on line 95 would panic. I left it alone because it isn't part of this crash.\",\"ttft_ms\":1564,\"type\":\"result\",\"duration_ms\":23211,\"uuid\":\"8f1790af-387a-4e08-8a0c-dd1a61466a0d\",\"ttft_stream_ms\":1212,\"time_to_request_ms\":238,\"first_content_frame_ms\":1212,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

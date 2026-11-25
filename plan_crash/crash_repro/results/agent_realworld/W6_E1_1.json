@@ -1,0 +1,35 @@
+{
+  "Case": "W6",
+  "Mode": "E1",
+  "Run": 1,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 32.3287976,
+  "CostUSD": 0.0882134,
+  "Turns": 7,
+  "InputTokens": 172728,
+  "OutputTokens": 1537,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/comment.go",
+      "line": 126,
+      "func": "mentions"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "mentions"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":13577,\"stop_reason\":\"end_turn\",\"session_id\":\"5d479115-f7b8-4c42-8855-74f21afa52f9\",\"total_cost_usd\":0.0882134,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":14244,\"cache_read_input_tokens\":158474,\"output_tokens\":1537,\"output_tokens_details\":{\"thinking_tokens\":135},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":14244,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":503,\"cache_read_input_tokens\":36918,\"cache_creation_input_tokens\":903,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":903},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":10,\"outputTokens\":1537,\"cacheReadInputTokens\":158474,\"cacheCreationInputTokens\":14244,\"webSearchRequests\":0,\"costUSD\":0.0882134,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":135,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":14244,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":7,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the `TestW6_` crash, but `go test ./...` still fails because `TestW1_CurrentUserDeleted` in `internal/app` crashes with a nil pointer dereference. I did not fix that one. It is a different crash, in `handler.(*UserHandler).GetCurrentUser` at `internal/handler/user.go:147`, and I didn't run the suite before my edit, so I can't say whether it was already failing. After the fix, `go test ./internal/app -run '^TestW6_' -count=1` passes, and `internal/service`, `internal/repository` and `internal/utils` also pass.\\n\\n**Root cause:** `mentions()` in `internal/service/comment.go` reads `word[1]` for every whitespace-separated token that starts with `@`. A bare `@` token (for example \\\"hi @ there\\\") has length 1, so that read is out of range. `CreateComment` runs `notifyMentions` in a goroutine, so the panic happened there. The bad value comes straight from the comment body, so the fault is in `mentions()` itself.\\n\\n**Fix:** the check is now `len(word) \u003e= 2 \u0026\u0026 word[0] == '@' \u0026\u0026 isNameChar(word[1])`.\\n\\nI wrote `gofl-localize.json` in the project root before editing, as asked.\\n\\nI also noticed that `DeleteComment` declares `comment` a second time inside its `if` block. The outer `comment` stays nil, so `comment.AuthorID` would panic whenever the `if` is taken. It isn't part of this crash and I left it alone.\",\"ttft_ms\":1512,\"type\":\"result\",\"duration_ms\":28764,\"uuid\":\"080a39ba-2b8a-4747-89cf-acc690163b43\",\"ttft_stream_ms\":1152,\"time_to_request_ms\":189,\"first_content_frame_ms\":1152,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

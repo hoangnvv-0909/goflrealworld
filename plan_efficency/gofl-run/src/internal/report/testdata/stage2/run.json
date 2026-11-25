@@ -1,0 +1,12 @@
+{
+  "tool_version": "0.1.0",
+  "status": "ok",
+  "error_code": null,
+  "mode": "pprof",
+  "go_version": "go1.26",
+  "os": "linux/amd64",
+  "duration_ms": 41230,
+  "base_pprof": "out/base.pprof",
+  "scaled_pprof": "out/scaled.pprof",
+  "paths_method": "paper"
+}

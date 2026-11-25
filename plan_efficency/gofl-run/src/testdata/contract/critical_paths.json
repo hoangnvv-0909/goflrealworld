@@ -1,0 +1,36 @@
+[
+  {
+    "target": "example.com/app/internal/report.BuildRows",
+    "target_rank": 1,
+    "signature": "cmd/api/main.go(main.run) -> internal/report/build.go(report.BuildRows)",
+    "score": 3.7,
+    "truncated": false,
+    "frames": [
+      {"name": "main.run", "file": "cmd/api/main.go", "line": 42},
+      {"name": "report.BuildRows", "file": "internal/report/build.go", "line": 88}
+    ]
+  },
+  {
+    "target": "example.com/app/internal/report.BuildRows",
+    "target_rank": 1,
+    "signature": "cmd/api/main.go(main.run) -> internal/report/rows.go(report.collect) -> internal/report/build.go(report.BuildRows)",
+    "score": 0.4,
+    "truncated": false,
+    "frames": [
+      {"name": "main.run", "file": "cmd/api/main.go", "line": 42},
+      {"name": "report.collect", "file": "internal/report/rows.go", "line": 17},
+      {"name": "report.BuildRows", "file": "internal/report/build.go", "line": 88}
+    ]
+  },
+  {
+    "target": "example.com/app/internal/report.format",
+    "target_rank": 2,
+    "signature": "cmd/api/main.go(main.run) -> internal/report/format.go(report.format)",
+    "score": 1.5,
+    "truncated": false,
+    "frames": [
+      {"name": "main.run", "file": "cmd/api/main.go", "line": 42},
+      {"name": "report.format", "file": "internal/report/format.go", "line": 12}
+    ]
+  }
+]

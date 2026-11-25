@@ -1,0 +1,35 @@
+{
+  "Case": "W1",
+  "Mode": "E1",
+  "Run": 2,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 27.2501365,
+  "CostUSD": 0.10512939999999998,
+  "Turns": 11,
+  "InputTokens": 257309,
+  "OutputTokens": 1806,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/user.go",
+      "line": 82,
+      "func": "UserService.GetUserByID"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "UserService.GetUserByID"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":15348,\"stop_reason\":\"end_turn\",\"session_id\":\"8d62d0a1-8e88-4fff-90d9-2ad30ffa9f0d\",\"total_cost_usd\":0.10512939999999998,\"usage\":{\"input_tokens\":14,\"cache_creation_input_tokens\":15721,\"cache_read_input_tokens\":241574,\"output_tokens\":1806,\"output_tokens_details\":{\"thinking_tokens\":37},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":15721,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":311,\"cache_read_input_tokens\":38864,\"cache_creation_input_tokens\":434,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":434},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":14,\"outputTokens\":1806,\"cacheReadInputTokens\":241574,\"cacheCreationInputTokens\":15721,\"webSearchRequests\":0,\"costUSD\":0.10512939999999998,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":37,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":15721,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":11,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The crash is fixed: `go test ./internal/app -run '^TestW1_' -count=1` now passes. I did not run the rest of the project's tests. The other `TestW*` tests in `crash_test.go` are expected to panic on their own bugs, so a full run would not be clean anyway.\\n\\n**Root cause:** `UserService.GetUserByID` in `internal/service/user.go` swallowed the \\\"user not found\\\" error and returned `(nil, nil)`. `GetCurrentUser` only checks `err`, so with a valid token for a deleted user it dereferenced a nil user at `user.go:147`. The handler was not at fault.\\n\\n**Fix:** `GetUserByID` now returns the repository error, and returns a \\\"user not found\\\" error if the repository hands back a nil user. The handler's existing 404 path now handles a deleted user. I added the `errors` import to make that compile.\\n\\nI wrote `gofl-localize.json` in the project root before making the change.\",\"ttft_ms\":1677,\"type\":\"result\",\"duration_ms\":23894,\"uuid\":\"c8e8497d-da38-4323-920e-9fe1811b0f40\",\"ttft_stream_ms\":1089,\"time_to_request_ms\":144,\"first_content_frame_ms\":1090,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

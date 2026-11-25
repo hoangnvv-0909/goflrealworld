@@ -1,0 +1,22 @@
+{
+  "Hash": "d9b46af3f1231499",
+  "Exception": "runtime error: invalid memory address or nil pointer dereference",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.(*Session).Token",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 63
+    },
+    {
+      "Func": "goflsample/crash.(*Session).Login",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 65
+    },
+    {
+      "Func": "goflsample/crash.TestLoginAnon",
+      "File": "\u003croot\u003e/crash/hard_test.go",
+      "Line": 15
+    }
+  ]
+}

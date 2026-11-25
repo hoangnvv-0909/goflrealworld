@@ -1,0 +1,19 @@
+# Chỉ push: plan_crash, plan_efficency, extension, papers
+/*
+!/.gitignore
+!/plan_crash/
+!/plan_efficency/
+!/extension/
+!/papers/
+
+# Build output / dependencies / binaries
+node_modules/
+out/
+*.vsix
+*.exe
+*.zip
+*.tar.gz
+
+# Binary release build (tái tạo bằng: go run scripts/build.go)
+plan_efficency/gofl-run/bin/
+plan_efficency/gofl-run/bin-local/

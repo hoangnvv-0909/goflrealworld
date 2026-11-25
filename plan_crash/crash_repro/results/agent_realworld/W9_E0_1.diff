@@ -1,0 +1,35 @@
+### internal/handler/article.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2144331686/internal/handler/article.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1366166239/internal/handler/article.go
+index df931bd..4d6e7ed 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2144331686/internal/handler/article.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1366166239/internal/handler/article.go
+@@ -321,0 +322,2 @@ func (h *ArticleHandler) GetArticlesFeed(w http.ResponseWriter, r *http.Request)
++	params.Limit = service.NormalizeFeedLimit(params.Limit)
++
+### internal/service/article.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2144331686/internal/service/article.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1366166239/internal/service/article.go
+index 4b03af8..8e247c8 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2144331686/internal/service/article.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1366166239/internal/service/article.go
+@@ -199,5 +199,4 @@ func (s *ArticleService) GetArticles(params ArticleListParams, currentUserID int
+-// GetArticlesFeed retrieves user's personalized feed of articles
+-func (s *ArticleService) GetArticlesFeed(params ArticleListParams, currentUserID int) (*model.ArticlesResponse, error) {
+-	// Set default limit
+-	if params.Limit <= 0 {
+-		params.Limit = 10
++// NormalizeFeedLimit applies the default and maximum feed page size.
++func NormalizeFeedLimit(limit int) int {
++	if limit <= 0 {
++		return 10
+@@ -205,2 +204,2 @@ func (s *ArticleService) GetArticlesFeed(params ArticleListParams, currentUserID
+-	if params.Limit > 100 {
+-		params.Limit = 100 // Max limit
++	if limit > 100 {
++		return 100
+@@ -207,0 +207,6 @@ func (s *ArticleService) GetArticlesFeed(params ArticleListParams, currentUserID
++	return limit
++}
++
++// GetArticlesFeed retrieves user's personalized feed of articles
++func (s *ArticleService) GetArticlesFeed(params ArticleListParams, currentUserID int) (*model.ArticlesResponse, error) {
++	params.Limit = NormalizeFeedLimit(params.Limit)

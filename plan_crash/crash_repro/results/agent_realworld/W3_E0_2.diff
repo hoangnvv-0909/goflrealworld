@@ -1,0 +1,15 @@
+### internal/handler/auth.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2388949123/internal/handler/auth.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-2744459421/internal/handler/auth.go
+index bf9bad2..445f703 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2388949123/internal/handler/auth.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-2744459421/internal/handler/auth.go
+@@ -5,0 +6 @@ import (
++	"math"
+@@ -133 +134,6 @@ func (h *AuthHandler) RefreshToken(w http.ResponseWriter, r *http.Request) {
+-			ttlHours = v.(int)
++			f, isNum := v.(float64)
++			if !isNum || f != math.Trunc(f) || f < 1 || f > 24 {
++				http.Error(w, `{"error":"ttl_hours must be between 1 and 24"}`, http.StatusBadRequest)
++				return
++			}
++			ttlHours = int(f)

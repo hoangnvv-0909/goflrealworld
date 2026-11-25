@@ -1,0 +1,21 @@
+--- FAIL: TestDescribe (0.00s)
+panic: interface conversion: interface {} is int, not string [recovered]
+	panic: interface conversion: interface {} is int, not string
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x552880, 0xc00009cc00})
+	<goroot>/src/testing/testing.go:1734 +0x21c
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1737 +0x35e
+panic({0x552880?, 0xc00009cc00?})
+	<goroot>/src/runtime/panic.go:792 +0x132
+goflsample/crash.Describe(...)
+	<root>/crash/crash.go:43
+goflsample/crash.TestDescribe(0xc0000ae380?)
+	<root>/crash/crash_test.go:29 +0x29
+testing.tRunner(0xc0000ae380, 0x585e98)
+	<goroot>/src/testing/testing.go:1792 +0xf4
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1851 +0x413
+FAIL	goflsample/crash	0.005s
+FAIL

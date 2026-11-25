@@ -1,0 +1,8 @@
+### internal/service/tag.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3133952000/internal/service/tag.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1805466583/internal/service/tag.go
+index 1def902..5eb30d3 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3133952000/internal/service/tag.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1805466583/internal/service/tag.go
+@@ -149 +149 @@ func (s *TagService) invalidatePopular() {
+-	s.popular = nil
++	s.popular = make(map[int][]string)

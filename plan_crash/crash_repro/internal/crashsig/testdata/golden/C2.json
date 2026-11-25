@@ -1,0 +1,17 @@
+{
+  "Hash": "1daa726dec3c402d",
+  "Exception": "runtime error: index out of range [#] with length #",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.Nth",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 21
+    },
+    {
+      "Func": "goflsample/crash.TestNth",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 23
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "Hash": "9eeed91a5c81710d",
+  "Exception": "strconv.Atoi: parsing \"\": invalid syntax",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.must",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 108
+    },
+    {
+      "Func": "goflsample/crash.ParsePort",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 115
+    },
+    {
+      "Func": "goflsample/crash.TestParsePortEmpty",
+      "File": "\u003croot\u003e/crash/hard_test.go",
+      "Line": 37
+    }
+  ]
+}

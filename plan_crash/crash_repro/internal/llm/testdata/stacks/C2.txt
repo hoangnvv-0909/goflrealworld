@@ -1,0 +1,20 @@
+--- FAIL: TestNth (0.00s)
+panic: runtime error: index out of range [3] with length 3 [recovered, repanicked]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x7ff7c82da3a0, 0xc00001a258})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff7c82da3a0?, 0xc00001a258?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+goflsample/crash.Nth(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash.go:21
+goflsample/crash.TestNth(0xc000003500?)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:23 +0x16
+testing.tRunner(0xc000003500, 0x7ff7c82f9a80)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+FAIL	goflsample/crash	0.433s
+FAIL

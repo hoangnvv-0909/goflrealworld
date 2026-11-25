@@ -1,0 +1,14 @@
+### internal/handler/article.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3384689557/internal/handler/article.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1256564519/internal/handler/article.go
+index df931bd..a7f2ccb 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3384689557/internal/handler/article.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1256564519/internal/handler/article.go
+@@ -321,0 +322,8 @@ func (h *ArticleHandler) GetArticlesFeed(w http.ResponseWriter, r *http.Request)
++	// Normalize limit the same way the service does (it works on a copy)
++	if params.Limit <= 0 {
++		params.Limit = 10
++	}
++	if params.Limit > 100 {
++		params.Limit = 100
++	}
++

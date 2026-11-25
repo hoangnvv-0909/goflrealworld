@@ -1,0 +1,16 @@
+### internal/utils/slug.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3722722244/internal/utils/slug.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-49619618/internal/utils/slug.go
+index 20f6e0a..1db9bab 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3722722244/internal/utils/slug.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-49619618/internal/utils/slug.go
+@@ -8,0 +9 @@ import (
++	"unicode/utf8"
+@@ -27,2 +28,6 @@ func GenerateSlug(title string) string {
+-	if len(title) > maxSlugBase {
+-		slug = strings.TrimRight(slug[:maxSlugBase], "-")
++	if len(slug) > maxSlugBase {
++		cut := maxSlugBase
++		for cut > 0 && !utf8.RuneStart(slug[cut]) {
++			cut--
++		}
++		slug = strings.TrimRight(slug[:cut], "-")

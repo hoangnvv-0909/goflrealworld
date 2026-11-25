@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "command": "perf",
+  "findings": [
+    {
+      "location": { "file": "internal/importer/import.go", "line": 52, "func": "LoadOrders" },
+      "score": 0.91,
+      "rank": 1,
+      "evidence": [
+        { "kind": "delta-self", "detail": "self time grows 48x from n=100 to n=5000" },
+        { "kind": "ndc", "detail": "call count grows with n (N+1 pattern)" }
+      ],
+      "flow": [
+        { "file": "cmd/server/main.go", "func": "main" },
+        { "file": "internal/importer/import.go", "func": "Import" },
+        { "file": "internal/importer/import.go", "line": 52, "func": "LoadOrders" }
+      ]
+    },
+    {
+      "location": { "file": "internal/importer/dedup.go", "line": 64, "func": "Dedup" },
+      "score": 0.40,
+      "rank": 2,
+      "evidence": [
+        { "kind": "delta-self", "detail": "self time grows 2500x from n=100 to n=5000" }
+      ]
+    }
+  ],
+  "notes": [
+    "CPU profile does not see time spent waiting on I/O."
+  ]
+}

@@ -1,0 +1,211 @@
+--- FAIL: TestTotalLongList (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered]
+	panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x8 pc=0x5203fc]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x5511a0, 0x6a4860})
+	<goroot>/src/testing/testing.go:1734 +0x21c
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1737 +0x35e
+panic({0x5511a0?, 0x6a4860?})
+	<goroot>/src/runtime/panic.go:792 +0x132
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a4e0)
+	<root>/crash/hard.go:130 +0x1c
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a500)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a520)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a540)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a560)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a580)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a5a0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a5c0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a5e0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a600)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a620)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a640)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a660)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a680)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a6a0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a6c0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a6e0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a700)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a720)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a740)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a760)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a780)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003a7a0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+...56 frames elided...
+goflsample/crash.(*Node).Total(0xc00003ab40)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ab60)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ab80)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003aba0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003abc0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003abe0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ac00)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ac20)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ac40)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ac60)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ac80)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003aca0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003acc0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ace0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ad00)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ad20)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ad40)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ad60)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ad80)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ada0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003adc0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ade0)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ae00)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00003ae20)
+	<root>/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	<root>/crash/hard.go:130
+goflsample/crash.TestTotalLongList(0xc000003880?)
+	<root>/crash/hard_test.go:50 +0x78
+testing.tRunner(0xc000003880, 0x585f18)
+	<goroot>/src/testing/testing.go:1792 +0xf4
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1851 +0x413
+FAIL	goflsample/crash	0.005s
+FAIL

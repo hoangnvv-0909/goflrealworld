@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "command": "perf",
+  "findings": [
+    {
+      "location": { "file": "perf/perf.go", "line": 52, "func": "goflsample/perf.LoadOrders" },
+      "score": 0.61,
+      "rank": 1,
+      "evidence": [
+        { "kind": "delta-self", "detail": "self time grows 48x from n=100 to n=5000" },
+        { "kind": "ndc", "detail": "61% of the total increase" }
+      ],
+      "flow": [
+        { "file": "perf/perf_test.go", "line": 30, "func": "goflsample/perf.BenchmarkLoadOrders" },
+        { "file": "perf/perf.go", "line": 52, "func": "goflsample/perf.LoadOrders" },
+        { "file": "perf/perf.go", "line": 44, "func": "goflsample/perf.(*FakeDB).ItemsOf" },
+        { "file": "perf/perf.go", "func": "goflsample/perf.(*FakeDB).roundTrip" }
+      ]
+    },
+    {
+      "location": { "file": "perf/perf.go", "line": 64, "func": "goflsample/perf.Dedup" },
+      "score": 0.30,
+      "rank": 2,
+      "evidence": [ { "kind": "delta-self", "detail": "self time grows 2500x from n=100 to n=5000" } ]
+    }
+  ],
+  "notes": [ "CPU profile does not see time spent waiting on I/O." ]
+}

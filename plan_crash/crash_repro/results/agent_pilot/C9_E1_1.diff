@@ -1,0 +1,12 @@
+### crash/hard.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2458136016/crash/hard.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-2144746962/crash/hard.go
+index 7cdffd6..c0b0ec6 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2458136016/crash/hard.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-2144746962/crash/hard.go
+@@ -54 +54,2 @@ type Session struct{ auth *auth }
+-// NewSession creates a session; anonymous sessions have no credentials.
++// NewSession creates a session; anonymous sessions have no credentials
++// (an empty token), but auth is always non-nil.
+@@ -57 +58 @@ func NewSession(anonymous bool) *Session {
+-		return &Session{}
++		return &Session{auth: &auth{}}

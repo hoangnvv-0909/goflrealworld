@@ -1,0 +1,35 @@
+{
+  "Case": "W6",
+  "Mode": "E0",
+  "Run": 3,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 31.7527888,
+  "CostUSD": 0.0722139,
+  "Turns": 6,
+  "InputTokens": 131035,
+  "OutputTokens": 1359,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/comment.go",
+      "line": 126,
+      "func": "mentions"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "mentions"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":14100,\"stop_reason\":\"end_turn\",\"session_id\":\"ba7c8d42-4fa4-4bb1-8ccd-b95ad13c2b85\",\"total_cost_usd\":0.0722139,\"usage\":{\"input_tokens\":8,\"cache_creation_input_tokens\":11668,\"cache_read_input_tokens\":119359,\"output_tokens\":1359,\"output_tokens_details\":{\"thinking_tokens\":44},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":11668,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":411,\"cache_read_input_tokens\":34869,\"cache_creation_input_tokens\":376,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":376},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":8,\"outputTokens\":1359,\"cacheReadInputTokens\":119359,\"cacheCreationInputTokens\":11668,\"webSearchRequests\":0,\"costUSD\":0.0722139,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":44,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":11668,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":6,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The crash is fixed. `go test ./internal/app -run '^TestW6_' -count=1` now passes. The full test run still fails on `TestW1_CurrentUserDeleted`, which I did not touch.\\n\\n**Root cause:** `mentions()` in `internal/service/comment.go` read `word[1]` for any word starting with `@`. A comment containing a bare `@` therefore panicked in the background `notifyMentions` goroutine. I added a `len(word) \u003e 1` check before that read. I wrote `gofl-localize.json` before making the change.\\n\\n**Remaining failure:** `TestW1_CurrentUserDeleted` panics with a nil pointer dereference, and the panic comes from a different code path than the `@` crash. I haven't investigated it, so I don't know whether it was already failing before my change. The other packages with tests (`repository`, `service`, `utils`) pass.\\n\\n**Possibly related:** `DeleteComment` in the same file declares `comment, err :=` inside an `if` block. That shadows the outer `comment`, so the outer one stays nil. When `commentID \u003e 0`, the later `comment.AuthorID` check would then panic. I didn't change it, and I haven't checked whether it relates to the `TestW1` failure.\",\"ttft_ms\":2700,\"type\":\"result\",\"duration_ms\":28298,\"uuid\":\"a7468d51-8e96-4047-a7f0-8ac750191795\",\"ttft_stream_ms\":1976,\"time_to_request_ms\":351,\"first_content_frame_ms\":1976,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

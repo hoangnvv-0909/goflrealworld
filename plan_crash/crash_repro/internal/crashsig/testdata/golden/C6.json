@@ -1,0 +1,17 @@
+{
+  "Hash": "3dfe1d969d632645",
+  "Exception": "close of closed channel",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.Finish",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 49
+    },
+    {
+      "Func": "goflsample/crash.TestFinishTwice",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 34
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "Hash": "b34d357129e12f90",
+  "Exception": "concurrent map writes",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.(*Counter).Add",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 68
+    },
+    {
+      "Func": "goflsample/crash.TestConcurrentMap",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 50
+    }
+  ]
+}

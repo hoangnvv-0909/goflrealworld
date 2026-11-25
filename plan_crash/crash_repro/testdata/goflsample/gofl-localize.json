@@ -1,0 +1,1 @@
+{"locations": [{"file": "crash/hard.go", "function": "NewSession", "line": 57}, {"file": "crash/hard.go", "function": "Session.Token", "line": 63}], "explanation": "NewSession(true) returns a Session whose auth field is nil, so Token dereferences s.auth.token and panics. The nil value is created in NewSession; anonymous sessions must get an empty (non-nil) auth."}

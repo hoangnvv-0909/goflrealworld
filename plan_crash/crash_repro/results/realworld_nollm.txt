@@ -1,0 +1,22 @@
+# gofl crash benchmark (realworld)
+
+Cases: 9. Pipeline rate: 100% (9/9 ran to a ranked output). Time: 77.6 s.
+
+| Configuration | file@1 | file@3 | file@5 | func@1 | func@3 | func@5 | line@1 | line@3 | line@5 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| gofl crash (no LLM) | 67% (6/9) | 78% (7/9) | 78% (7/9) | 56% (5/9) | 67% (6/9) | 67% (6/9) | 44% (4/9) | 56% (5/9) | 56% (5/9) |
+| baseline: first user frame | 67% (6/9) | 67% (6/9) | 67% (6/9) | 56% (5/9) | 56% (5/9) | 56% (5/9) | 44% (4/9) | 44% (4/9) | 44% (4/9) |
+
+Ranking vs baseline, file Acc@3: +11 points.
+
+| Case | Ran | Events | Groups | Top-1 | Note |
+|---|---|---:|---:|---|---|
+| W1 | true | 1 | 1 | `internal/handler/user.go:147` |  |
+| W2 | true | 2 | 1 | `internal/utils/slug.go:28` |  |
+| W3 | true | 1 | 1 | `internal/handler/auth.go:133` |  |
+| W4 | true | 1 | 1 | `internal/service/tag.go:47` |  |
+| W5 | true | 1 | 1 | `internal/service/comment.go:95` |  |
+| W6 | true | 1 | 1 | `internal/service/comment.go:126` |  |
+| W7 | true | 1 | 1 | `internal/utils/must.go:7` |  |
+| W8 | true | 4 | 1 | `internal/service/article.go:151` |  |
+| W9 | true | 1 | 1 | `internal/handler/article.go:335` |  |
