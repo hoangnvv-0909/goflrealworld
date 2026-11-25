@@ -28,3 +28,32 @@ export function crashRunArgs(pkgs: string, run: string): string[] {
   if (run.trim()) a.push('-run', run.trim());
   return a;
 }
+
+export interface PerfOptions {
+  /** Project root: file paths in the result are relative to it. */
+  dir: string;
+  /** Where gofl perf writes hotspots.json and the other files. */
+  out: string;
+  /** Benchmark mode: the benchmark name and the two sizes ("100,10000"). */
+  bench?: string;
+  sizes?: string;
+  /** pprof mode: two CPU profiles, small and large size. */
+  base?: string;
+  scaled?: string;
+  /** Extra arguments from the settings (gofl.perfArgs), e.g. ["-pkg", "./internal/x"]. */
+  extra?: string[];
+}
+
+/** gofl perf. It writes files into out and prints no JSON, so there is no -format. */
+export function perfRunArgs(o: PerfOptions): string[] {
+  // An old setting started with "perf"; the subcommand is added here.
+  const extra = (o.extra ?? []).filter((x, i) => !(i === 0 && x === 'perf'));
+  const a = ['perf', '-dir', o.dir, '-out', o.out, ...extra];
+  if (o.base && o.scaled) {
+    a.push('-base', o.base, '-scaled', o.scaled);
+  } else if (o.bench) {
+    a.push('-bench', o.bench);
+    if (o.sizes?.trim()) a.push('-sizes', o.sizes.trim());
+  }
+  return a;
+}

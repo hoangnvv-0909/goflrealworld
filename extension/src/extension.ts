@@ -9,8 +9,10 @@
 // (parse, notes, linediff, args, ...) and are tested with `node --test`.
 // gofl perf plugs in through the same Session: see features at the end.
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import * as vscode from 'vscode';
-import { crashPromptArgs, crashReportArgs, crashRunArgs } from './args';
+import { crashPromptArgs, crashReportArgs, crashRunArgs, perfRunArgs } from './args';
 import { Notes } from './decorations';
 import { filesFromReport } from './hints';
 import { diffLines } from './linediff';
@@ -19,6 +21,7 @@ import { AgentPrompt, Location, Report } from './model';
 import { noteFiles, Session } from './notes';
 import { parseAgentPrompt, parseReport, ReportError } from './parse';
 import { relativeToRoot, resolveFile } from './paths';
+import { parseHotspots, parsePaths, PerfError, perfStatus, perfToReport } from './perf';
 import { execGofl, firstLine } from './runner';
 import { GoflTree } from './tree';
 
@@ -88,13 +91,12 @@ export function activate(ctx: vscode.ExtensionContext): void {
     return vscode.window.showErrorMessage(`gofl: ${msg}`, 'Show log').then((b) => b && out.show(true));
   };
 
-  const run = async (args: string[], cwd: string, stdin?: string) => {
-    const bin = cfg().get<string>('path', 'gofl');
+  const run = async (args: string[], cwd: string, stdin?: string, bin = cfg().get<string>('path', 'gofl')) => {
     out.appendLine(`$ ${bin} ${args.join(' ')}${stdin ? `   (stdin: ${stdin.length} chars)` : ''}`);
     const r = await execGofl(bin, args, { cwd, stdin });
     if (r.stderr) out.appendLine(r.stderr.trimEnd());
     if (r.notFound) {
-      await showError(`"${bin}" not found. Install gofl or set gofl.path.`);
+      await showError(`"${bin}" not found. Install gofl or set gofl.path (gofl.perfPath for gofl perf).`);
       return undefined;
     }
     if (r.timedOut) {
@@ -348,17 +350,88 @@ export function activate(ctx: vscode.ExtensionContext): void {
     await vscode.commands.executeCommand('goflResults.focus');
   };
 
+  // gofl perf writes files into -out (no JSON on stdout); perf.ts turns them into a Report.
+  const readIf = (p: string): string | undefined => {
+    try {
+      return fs.readFileSync(p, 'utf8');
+    } catch {
+      return undefined;
+    }
+  };
+
   const profile = async () => {
     const cwd = await pickRoot();
     if (!cwd) return;
-    const args = [...cfg().get<string[]>('perfArgs', []), '-format', 'json'];
-    const r = await vscode.window.withProgress(
-      { location: vscode.ProgressLocation.Notification, title: `gofl ${args[0] ?? ''}…` },
-      () => run(args, cwd),
+
+    const how = await vscode.window.showQuickPick(
+      [
+        { id: 'bench', label: '$(beaker) Run a benchmark', description: 'gofl runs it at a small and a large size' },
+        { id: 'pprof', label: '$(file-binary) Two CPU profiles', description: 'a .pprof at the small size and one at the large size' },
+      ],
+      { placeHolder: 'How should gofl perf get the profiles?' },
     );
-    if (!r) return;
-    if (!r.stdout.trim()) return void (await showError(firstLine(r)));
-    await showReport(r.stdout, cwd);
+    if (!how) return;
+
+    let mode: { bench?: string; sizes?: string; base?: string; scaled?: string };
+    if (how.id === 'bench') {
+      const bench = await vscode.window.showInputBox({
+        prompt: 'Benchmark name (it needs one sub-benchmark per size, e.g. b.Run("size=100", ...))',
+        placeHolder: 'BenchmarkDedup',
+        value: cfg().get<string>('perfBench', ''),
+      });
+      if (!bench?.trim()) return;
+      const sizes = await vscode.window.showInputBox({
+        prompt: 'Small and large size, separated by a comma',
+        value: cfg().get<string>('perfSizes', '100,10000'),
+      });
+      if (sizes === undefined) return;
+      mode = { bench: bench.trim(), sizes };
+    } else {
+      const base = await vscode.window.showOpenDialog({ canSelectMany: false, title: 'CPU profile at the SMALL size', filters: { pprof: ['pprof', 'pb', 'gz', 'prof'] } });
+      if (!base?.[0]) return;
+      const scaled = await vscode.window.showOpenDialog({ canSelectMany: false, title: 'CPU profile at the LARGE size', filters: { pprof: ['pprof', 'pb', 'gz', 'prof'] } });
+      if (!scaled?.[0]) return;
+      mode = { base: base[0].fsPath, scaled: scaled[0].fsPath };
+    }
+
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gofl-perf-'));
+    try {
+      const args = perfRunArgs({ dir: cwd, out: outDir, extra: cfg().get<string[]>('perfArgs', []), ...mode });
+      const bin = cfg().get<string>('perfPath', '').trim() || cfg().get<string>('path', 'gofl');
+      const r = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: 'gofl perf: running the benchmark, this can take a few minutes…' },
+        () => run(args, cwd, undefined, bin),
+      );
+      if (!r) return;
+      const status = perfStatus(r.stdout, readIf(path.join(outDir, 'diagnostics.json')), r.code);
+      if (!status.ok) {
+        // gofl says the specific reason on a "gofl perf: CODE: ..." line of stderr.
+        const why = r.stderr.split('\n').find((l) => l.startsWith('gofl perf:'))?.replace(/^gofl perf:\s*/, '');
+        await showError(why ? `${why}\n(${status.message})` : status.code ? status.message : firstLine(r));
+        return;
+      }
+      const hot = readIf(path.join(outDir, 'hotspots.json'));
+      if (hot === undefined) {
+        await showError('gofl perf finished but wrote no hotspots.json. Is gofl.perfPath the perf binary (plan_efficency/gofl-run)?');
+        return;
+      }
+      let rep: Report;
+      try {
+        rep = perfToReport(parseHotspots(hot), parsePaths(readIf(path.join(outDir, 'critical_paths.json'))), { roots: roots(), exists: fs.existsSync });
+      } catch (e) {
+        await showError(`cannot read gofl perf's answer: ${e instanceof PerfError ? e.message : String(e)}`);
+        return;
+      }
+      if (rep.findings.length === 0) {
+        vscode.window.showInformationMessage('gofl: no hotspot found (no function got slower between the two sizes).');
+        return;
+      }
+      await showReport(JSON.stringify(rep), cwd);
+      const note = (rep.notes ?? []).find((n) => n.startsWith('not under'));
+      if (note) vscode.window.showWarningMessage(`gofl: ${note}`);
+    } finally {
+      fs.rmSync(outDir, { recursive: true, force: true });
+    }
   };
 
   const mode = async () => {

@@ -34,12 +34,12 @@ Kiểm tra nhanh: `gofl crash -h` phải liệt kê `-agent-prompt`. Nếu khôn
 ```
 cd D:\NL&TKTT\extension
 npm install
-npm test                 # 30 test, không cần mở VS Code
-npm run package          # tạo gofl-vscode-0.1.0.vsix
-code --install-extension gofl-vscode-0.1.0.vsix
+npm test                 # 41 test, không cần mở VS Code
+npm run package          # tạo gofl-vscode-0.2.0.vsix
+code --install-extension gofl-vscode-0.2.0.vsix
 ```
 
-Trong thư mục này đã có sẵn `gofl-vscode-0.1.0.vsix`, nên có thể cài ngay bằng lệnh cuối. Cài xong, khởi động lại VS Code.
+Trong thư mục này đã có sẵn `gofl-vscode-0.2.0.vsix`, nên có thể cài ngay bằng lệnh cuối. Cài xong, khởi động lại VS Code.
 
 Muốn thử từ mã nguồn mà không cài: mở thư mục `extension` trong VS Code, bấm **F5**, cửa sổ mới (Extension Development Host) sẽ có extension.
 
@@ -112,7 +112,10 @@ Cài đặt `gofl.agentMode`, hoặc lệnh **gofl: Choose prompt mode (E0 or E1
 | `gofl.agentMode` | `e1` | `e1` hoặc `e0`, xem trên |
 | `gofl.repro` | `[]` | Lệnh tái hiện crash. Có giá trị thì extension không hỏi nữa |
 | `gofl.crashArgs` | `[]` | Cờ thêm cho `gofl crash`, ví dụ `["-profile", "svc.json"]`. `-dir` và `-format` được thêm tự động |
-| `gofl.perfArgs` | `["perf", "-bench", "BenchmarkImport", "./internal/importer"]` | Tham số cho `gofl perf` (nhóm E) |
+| `gofl.perfPath` | rỗng | Binary `gofl` của nhóm E (`plan_efficency/gofl-run`). Rỗng thì dùng `gofl.path`. `gofl crash` luôn dùng `gofl.path` |
+| `gofl.perfArgs` | `[]` | Cờ thêm cho `gofl perf`, ví dụ `["-pkg", "./slow", "-setup", "docker compose up -d"]`. `perf`, `-dir`, `-out`, `-bench`, `-sizes` được thêm tự động |
+| `gofl.perfBench` | rỗng | Tên benchmark mặc định |
+| `gofl.perfSizes` | `100,10000` | Hai kích thước (nhỏ, lớn) mặc định |
 | `gofl.notes.enabled` | `true` | Tắt thì không vẽ ghi chú trong editor |
 
 Màu đổi được trong `workbench.colorCustomizations`: `gofl.suspectBackground`, `gofl.agentBackground`, `gofl.addedBackground`, `gofl.removedBackground` và bốn màu `...Foreground` tương ứng.
@@ -154,15 +157,20 @@ Trạng thái là một `Session`: các file gofl chỉ ra, bản chụp từng 
 
 Hợp đồng với phía Go: `docs/CONTRACT.md` ở `plan_crash/crash_repro` (mục cờ `-agent-prompt`, `-agent-mode`, `-repro`). Khi `finding.SchemaVersion` đổi thì cập nhật `src/model.ts` và `SCHEMA_VERSION`.
 
-## 6. Gắn `gofl perf` (nhóm E)
+## 6. Dùng `gofl perf` (nhóm E)
 
-Ghi chú không biết gì về crash: nó vẽ một `Session`. Với perf:
+Binary E khác binary C. Build từ `plan_efficency/gofl-run/src`: `go build -trimpath -o gofl-perf.exe ./cmd/gofl`, rồi đặt `gofl.perfPath` trỏ tới nó. `gofl crash` vẫn dùng `gofl.path`.
 
-1. Cần một `Report` (JSON `finding.Report`). Extension đã chấp nhận `"command": "perf"`. Lệnh **gofl: Open JSON report** và **gofl: Profile benchmark** đã đổi report thành `Session` bằng `filesFromReport`, và ghi chú khi đó ghi *hotspot* thay vì *suspect*.
-2. Binary của nhóm E (`plan_efficency/gofl-run`) hiện ghi `out/hotspots.json` và `out/report/report.json`, **không phải** `finding.Report`. Chọn một trong hai:
-   - cho `gofl perf -format json` in ra `finding.Report` (theo `CONTRACT.md` mục 1); hoặc
-   - viết bộ chuyển `hotspots.json` thành `Report` cạnh `src/parse.ts`, rồi gọi nó trong hàm `profile` của `src/extension.ts`.
-3. Nếu perf cũng có prompt cho Agent: thêm `perfPromptArgs` vào `src/args.ts` và một lệnh cạnh `gofl.analyzeLog`. `Session`, ghi chú, diff và cây không cần đổi.
+1. Mở **thư mục gốc project Go** (có `go.mod`).
+2. Chạy **gofl: Profile benchmark (gofl perf)** và chọn:
+   - **Run a benchmark**: nhập tên benchmark và hai kích thước. Benchmark cần một sub-benchmark cho mỗi kích thước, ví dụ `b.Run("n=100", ...)`. Benchmark trùng tên ở nhiều gói thì thêm `["-pkg", "./slow"]` vào `gofl.perfArgs`.
+   - **Two CPU profiles**: chọn file pprof cỡ nhỏ và cỡ lớn (không cần Go).
+3. `gofl perf` ghi `hotspots.json`, `critical_paths.json` vào một thư mục tạm. `src/perf.ts` đổi chúng thành `Report` (`command: "perf"`) rồi dùng lại `Session`, ghi chú, cây và diff của bài C. Thư mục tạm bị xoá sau khi đọc.
+4. Hàm chậm được tô cam, nhãn ghi *hotspot*, kèm hạng và điểm (độ tăng thời gian, chuẩn hoá 0..1). Ở chế độ benchmark, điểm và số liệu tính theo thời gian **mỗi thao tác** (`delta_per_op_seconds`), đúng như `gofl perf` xếp hạng.
+5. Đường dẫn trong file pprof là của máy tạo ra nó. Nếu không nằm trong thư mục đang mở, extension thử khớp phần đuôi (ít nhất hai đoạn) với file trong thư mục; không khớp được thì báo cảnh báo.
+6. Lỗi của `gofl perf` (`NO_BENCH`, `NO_MODULE`, `BUILD_FAIL`, ...) hiện kèm lý do cụ thể ở thông báo và **Output → gofl**.
+
+Chưa có prompt cho Agent ở bài E. Phần đó dự kiến làm riêng (`src/perfprompt.ts`), dùng chung `Session`.
 
 ## 7. Giới hạn
 
