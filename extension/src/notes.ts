@@ -35,6 +35,9 @@ export interface Session {
   prompt?: string;
 }
 
+/** The word for what gofl marks: the same in the editor and in the tree. */
+export const tagOf = (command: 'crash' | 'perf'): string => (command === 'perf' ? 'hotspot' : 'suspect');
+
 /** "goflsample/crash.(*Registry).Inc" -> "Registry.Inc"; "pkg.Func" -> "Func". */
 export function shortFunc(fn: string): string {
   const base = fn.slice(fn.lastIndexOf('/') + 1);
@@ -81,12 +84,12 @@ const clamp = (n: number, total: number) => Math.min(Math.max(n, 0), Math.max(to
 export function notesFor(file: string, text: string, s: Session): Note[] {
   const total = splitLines(text).length;
   const out: Note[] = [];
-  const tag = s.command === 'perf' ? 'hotspot' : 'suspect';
+  const tag = tagOf(s.command);
 
   s.files.forEach((f, idx) => {
     if (f.file !== file) return;
     const detail = f.funcs.map((x) => `- \`${shortFunc(x.func)}\`${x.line ? ` (line ${x.line})` : ''}`).join('\n');
-    const given = s.mode ? `\n\nGiven to the Agent: ${s.mode === 'E1' ? 'yes' : 'no (E0, crash facts only)'}` : '';
+    const given = s.mode ? `\n\nGiven to the Agent: ${s.mode === 'E1' ? 'yes' : 'no (E0, facts only)'}` : '';
     const placed = new Set<number>();
     for (const fn of f.funcs) {
       if (!fn.line) continue;

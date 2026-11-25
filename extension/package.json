@@ -1,7 +1,7 @@
 {
   "name": "gofl-vscode",
   "displayName": "gofl",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "gofl for VS Code: turn a crash log into a prompt for a repair Agent, mark the suspect files, and compare the Agent's fix.",
   "publisher": "gofl",
   "license": "UNLICENSED",
@@ -23,7 +23,8 @@
   },
   "contributes": {
     "commands": [
-      { "command": "gofl.analyzeLog", "title": "gofl: Generate Agent prompt from a crash log", "icon": "$(sparkle)" },
+      { "command": "gofl.analyze", "title": "gofl: Analyze (crash or slow benchmark)", "icon": "$(sparkle)" },
+      { "command": "gofl.analyzeLog", "title": "gofl: Generate Agent prompt from a crash log" },
       { "command": "gofl.analyzeSelection", "title": "gofl: Generate Agent prompt from selection" },
       { "command": "gofl.copyPrompt", "title": "gofl: Copy Agent prompt", "icon": "$(copy)" },
       { "command": "gofl.showPrompt", "title": "gofl: Show Agent prompt" },
@@ -39,7 +40,7 @@
       "commandPalette": [{ "command": "gofl.openLocation", "when": "false" }],
       "editor/context": [{ "command": "gofl.analyzeSelection", "when": "editorHasSelection", "group": "gofl@1" }],
       "view/title": [
-        { "command": "gofl.analyzeLog", "when": "view == goflResults", "group": "navigation@1" },
+        { "command": "gofl.analyze", "when": "view == goflResults", "group": "navigation@1" },
         { "command": "gofl.copyPrompt", "when": "view == goflResults", "group": "navigation@2" },
         { "command": "gofl.showChanges", "when": "view == goflResults", "group": "navigation@3" },
         { "command": "gofl.reloadAgent", "when": "view == goflResults", "group": "navigation@4" },
@@ -52,7 +53,7 @@
     "viewsWelcome": [
       {
         "view": "goflResults",
-        "contents": "Turn a crash log into a prompt for a repair Agent.\n[Generate Agent prompt from a crash log](command:gofl.analyzeLog)\nSelect a stack trace in any editor, then right-click and choose **gofl: Generate Agent prompt from selection**."
+        "contents": "Turn a crash log or a slow benchmark into a prompt for a repair Agent.\n[Analyze a crash or a slow benchmark](command:gofl.analyze)\n[Crash log](command:gofl.analyzeLog) [Benchmark](command:gofl.profileBenchmark)\nSelect a stack trace in any editor, then right-click and choose **gofl: Generate Agent prompt from selection**."
       }
     ],
     "colors": [
@@ -71,7 +72,7 @@
         "gofl.path": { "type": "string", "default": "gofl", "description": "Path of the gofl binary." },
         "gofl.agentMode": {
           "type": "string", "enum": ["e1", "e0"], "default": "e1",
-          "enumDescriptions": ["E1: crash facts plus the top 3 files gofl suspects", "E0: crash facts only (the control)"],
+          "enumDescriptions": ["E1: the facts plus the top 3 files gofl suspects", "E0: the facts only, no ranking (the control)"],
           "description": "What the Agent prompt contains."
         },
         "gofl.repro": {
@@ -82,10 +83,16 @@
           "type": "array", "items": { "type": "string" }, "default": [],
           "description": "Extra arguments for gofl crash, e.g. [\"-profile\", \"svc.json\"]. -dir and -format are added."
         },
-        "gofl.perfArgs": {
-          "type": "array", "items": { "type": "string" }, "default": ["perf", "-bench", "BenchmarkImport", "./internal/importer"],
-          "description": "Arguments for gofl perf. -format json is added."
+        "gofl.perfPath": {
+          "type": "string", "default": "",
+          "description": "Path of the gofl binary for gofl perf (plan_efficency/gofl-run). Empty: use gofl.path. gofl crash always uses gofl.path."
         },
+        "gofl.perfArgs": {
+          "type": "array", "items": { "type": "string" }, "default": [],
+          "description": "Extra arguments for gofl perf, e.g. [\"-pkg\", \"./internal/importer\", \"-setup\", \"docker compose up -d\"]. The subcommand, -dir, -out, -bench and -sizes are added."
+        },
+        "gofl.perfBench": { "type": "string", "default": "", "description": "Default benchmark name for \"gofl: Profile benchmark\"." },
+        "gofl.perfSizes": { "type": "string", "default": "100,10000", "description": "Default small and large size for \"gofl: Profile benchmark\"." },
         "gofl.notes.enabled": { "type": "boolean", "default": true, "description": "Draw the visual notes in the editor." }
       }
     }

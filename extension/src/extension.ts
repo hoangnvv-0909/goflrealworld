@@ -9,16 +9,20 @@
 // (parse, notes, linediff, args, ...) and are tested with `node --test`.
 // gofl perf plugs in through the same Session: see features at the end.
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import * as vscode from 'vscode';
-import { crashPromptArgs, crashReportArgs, crashRunArgs } from './args';
+import { crashPromptArgs, crashReportArgs, crashRunArgs, perfRunArgs } from './args';
 import { Notes } from './decorations';
 import { filesFromReport } from './hints';
 import { diffLines } from './linediff';
 import { LOCALIZE_FILE, parseLocalize } from './localize';
-import { AgentPrompt, Location, Report } from './model';
-import { noteFiles, Session } from './notes';
+import { Analysis, AgentPrompt, Location, Report } from './model';
+import { noteFiles, Session, tagOf } from './notes';
 import { parseAgentPrompt, parseReport, ReportError } from './parse';
 import { relativeToRoot, resolveFile } from './paths';
+import { perfAnalysis, pkgFromArgs } from './perfprompt';
+import { parseHotspots, parsePaths, PerfError, perfStatus, perfToReport } from './perf';
 import { execGofl, firstLine } from './runner';
 import { GoflTree } from './tree';
 
@@ -88,13 +92,12 @@ export function activate(ctx: vscode.ExtensionContext): void {
     return vscode.window.showErrorMessage(`gofl: ${msg}`, 'Show log').then((b) => b && out.show(true));
   };
 
-  const run = async (args: string[], cwd: string, stdin?: string) => {
-    const bin = cfg().get<string>('path', 'gofl');
+  const run = async (args: string[], cwd: string, stdin?: string, bin = cfg().get<string>('path', 'gofl')) => {
     out.appendLine(`$ ${bin} ${args.join(' ')}${stdin ? `   (stdin: ${stdin.length} chars)` : ''}`);
     const r = await execGofl(bin, args, { cwd, stdin });
     if (r.stderr) out.appendLine(r.stderr.trimEnd());
     if (r.notFound) {
-      await showError(`"${bin}" not found. Install gofl or set gofl.path.`);
+      await showError(`"${bin}" not found. Install gofl or set gofl.path (gofl.perfPath for gofl perf).`);
       return undefined;
     }
     if (r.timedOut) {
@@ -219,35 +222,50 @@ export function activate(ctx: vscode.ExtensionContext): void {
     );
     if (!done) return;
 
+    await present(
+      {
+        command: 'crash',
+        mode: done.prompt.mode,
+        prompt: done.prompt.prompt,
+        files: done.prompt.files,
+        summary: `${done.prompt.events} crash event(s), ${done.prompt.files.length} suspect file(s)`,
+      },
+      done.rep,
+    );
+  };
+
+  /**
+   * The one way both commands show their result: the same session, notes, tree,
+   * prompt and messages for gofl crash and gofl perf.
+   */
+  const present = async (a: Analysis, rep: Report | undefined) => {
+    const tag = tagOf(a.command);
     session = {
-      command: 'crash',
-      mode: done.prompt.mode,
+      command: a.command,
+      mode: a.mode,
       createdAt: new Date().toISOString(),
-      files: done.prompt.files,
-      snapshots: snapshotFiles(done.prompt.files.map((f) => f.file)),
-      prompt: done.prompt.prompt,
+      files: a.files,
+      snapshots: snapshotFiles(a.files.map((f) => f.file)),
+      prompt: a.prompt,
     };
-    report = done.rep;
+    report = rep;
     await loadAgent(false);
     await save();
     refresh();
     await vscode.commands.executeCommand('goflResults.focus');
     await showPrompt();
-    const missing = done.prompt.files.filter((f) => !(f.file in session!.snapshots)).map((f) => f.file);
+    const missing = a.files.filter((f) => !(f.file in session!.snapshots)).map((f) => f.file);
     if (missing.length) {
-      vscode.window.showWarningMessage(`gofl: not found in the open folder: ${missing.join(', ')}. Open the project root where the crash happened.`);
+      vscode.window.showWarningMessage(`gofl: not found in the open folder: ${missing.join(', ')}. Open the project root where gofl was run.`);
     }
-    const again = done.prompt.files.length === 0 ? ' No suspect file was found in this log.' : '';
-    const pick = await vscode.window.showInformationMessage(
-      `gofl: Agent prompt ready (${done.prompt.mode}, ${done.prompt.events} crash event(s), ${done.prompt.files.length} suspect file(s)).${again}`,
-      'Copy prompt',
-    );
+    const none = a.files.length === 0 ? ` No ${tag} file was found.` : '';
+    const pick = await vscode.window.showInformationMessage(`gofl: Agent prompt ready (${a.mode}, ${a.summary}).${none}`, 'Copy prompt');
     if (pick === 'Copy prompt') await copyPrompt();
   };
 
   const showPrompt = async () => {
     if (!session?.prompt) {
-      await showError('there is no prompt yet. Run "gofl: Generate Agent prompt from a crash log".');
+      await showError('there is no prompt yet. Run "gofl: Generate Agent prompt from a crash log" or "gofl: Profile benchmark".');
       return;
     }
     const doc = await vscode.workspace.openTextDocument({ language: 'markdown', content: session.prompt });
@@ -328,7 +346,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
   // ---- other commands -----------------------------------------------------
 
-  /** Shows a report (from a file, or from gofl perf) with the same notes. */
+  /** Shows a report loaded from a JSON file (no prompt) with the same notes. */
   const showReport = async (text: string, root: string | undefined) => {
     try {
       report = parseReport(text);
@@ -348,24 +366,117 @@ export function activate(ctx: vscode.ExtensionContext): void {
     await vscode.commands.executeCommand('goflResults.focus');
   };
 
+  // gofl perf writes files into -out (no JSON on stdout); perf.ts turns them into a Report.
+  const readIf = (p: string): string | undefined => {
+    try {
+      return fs.readFileSync(p, 'utf8');
+    } catch {
+      return undefined;
+    }
+  };
+
   const profile = async () => {
     const cwd = await pickRoot();
     if (!cwd) return;
-    const args = [...cfg().get<string[]>('perfArgs', []), '-format', 'json'];
-    const r = await vscode.window.withProgress(
-      { location: vscode.ProgressLocation.Notification, title: `gofl ${args[0] ?? ''}…` },
-      () => run(args, cwd),
+
+    const how = await vscode.window.showQuickPick(
+      [
+        { id: 'bench', label: '$(beaker) Run a benchmark', description: 'gofl runs it at a small and a large size' },
+        { id: 'pprof', label: '$(file-binary) Two CPU profiles', description: 'a .pprof at the small size and one at the large size' },
+      ],
+      { placeHolder: 'How should gofl perf get the profiles?' },
     );
-    if (!r) return;
-    if (!r.stdout.trim()) return void (await showError(firstLine(r)));
-    await showReport(r.stdout, cwd);
+    if (!how) return;
+
+    let mode: { bench?: string; sizes?: string; base?: string; scaled?: string };
+    if (how.id === 'bench') {
+      const bench = await vscode.window.showInputBox({
+        prompt: 'Benchmark name (it needs one sub-benchmark per size, e.g. b.Run("size=100", ...))',
+        placeHolder: 'BenchmarkDedup',
+        value: cfg().get<string>('perfBench', ''),
+      });
+      if (!bench?.trim()) return;
+      const sizes = await vscode.window.showInputBox({
+        prompt: 'Small and large size, separated by a comma',
+        value: cfg().get<string>('perfSizes', '100,10000'),
+      });
+      if (sizes === undefined) return;
+      mode = { bench: bench.trim(), sizes };
+    } else {
+      const base = await vscode.window.showOpenDialog({ canSelectMany: false, title: 'CPU profile at the SMALL size', filters: { pprof: ['pprof', 'pb', 'gz', 'prof'] } });
+      if (!base?.[0]) return;
+      const scaled = await vscode.window.showOpenDialog({ canSelectMany: false, title: 'CPU profile at the LARGE size', filters: { pprof: ['pprof', 'pb', 'gz', 'prof'] } });
+      if (!scaled?.[0]) return;
+      mode = { base: base[0].fsPath, scaled: scaled[0].fsPath };
+    }
+
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gofl-perf-'));
+    try {
+      const args = perfRunArgs({ dir: cwd, out: outDir, extra: cfg().get<string[]>('perfArgs', []), ...mode });
+      const bin = cfg().get<string>('perfPath', '').trim() || cfg().get<string>('path', 'gofl');
+      const r = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: 'gofl perf: running the benchmark, this can take a few minutes…' },
+        () => run(args, cwd, undefined, bin),
+      );
+      if (!r) return;
+      const status = perfStatus(r.stdout, readIf(path.join(outDir, 'diagnostics.json')), r.code);
+      if (!status.ok) {
+        // gofl says the specific reason on a "gofl perf: CODE: ..." line of stderr.
+        const why = r.stderr.split('\n').find((l) => l.startsWith('gofl perf:'))?.replace(/^gofl perf:\s*/, '');
+        await showError(why ? `${why}\n(${status.message})` : status.code ? status.message : firstLine(r));
+        return;
+      }
+      const hot = readIf(path.join(outDir, 'hotspots.json'));
+      if (hot === undefined) {
+        await showError('gofl perf finished but wrote no hotspots.json. Is gofl.perfPath the perf binary (plan_efficency/gofl-run)?');
+        return;
+      }
+      let rep: Report;
+      try {
+        rep = perfToReport(parseHotspots(hot), parsePaths(readIf(path.join(outDir, 'critical_paths.json'))), { roots: roots(), exists: fs.existsSync });
+      } catch (e) {
+        await showError(`cannot read gofl perf's answer: ${e instanceof PerfError ? e.message : String(e)}`);
+        return;
+      }
+      if (rep.findings.length === 0) {
+        vscode.window.showInformationMessage('gofl: no hotspot found (no function got slower between the two sizes).');
+        return;
+      }
+      const agentMode = cfg().get<string>('agentMode', 'e1') === 'e0' ? 'E0' : 'E1';
+      const a = perfAnalysis({
+        report: rep,
+        mode: agentMode,
+        bench: mode.bench,
+        sizes: mode.sizes,
+        pkg: pkgFromArgs(cfg().get<string[]>('perfArgs', [])),
+        repro: cfg().get<string[]>('repro', []),
+      });
+      await present(a, rep);
+      const note = (rep.notes ?? []).find((n) => n.startsWith('not under'));
+      if (note) vscode.window.showWarningMessage(`gofl: ${note}`);
+    } finally {
+      fs.rmSync(outDir, { recursive: true, force: true });
+    }
+  };
+
+  /** One entry for both: a crash log (gofl crash) or a benchmark (gofl perf). */
+  const analyzeAny = async () => {
+    const pick = await vscode.window.showQuickPick(
+      [
+        { id: 'crash', label: '$(bug) A crash', description: 'stack trace, log file or go test run → Agent prompt' },
+        { id: 'perf', label: '$(dashboard) A slow benchmark', description: 'benchmark or two CPU profiles → Agent prompt' },
+      ],
+      { placeHolder: 'What should gofl analyse?' },
+    );
+    if (pick?.id === 'crash') await analyze(false);
+    else if (pick?.id === 'perf') await profile();
   };
 
   const mode = async () => {
     const pick = await vscode.window.showQuickPick(
       [
         { label: 'E1', description: 'crash facts plus the top 3 files gofl suspects', value: 'e1' },
-        { label: 'E0', description: 'crash facts only (the control)', value: 'e0' },
+        { label: 'E0', description: 'facts only, no ranking (the control)', value: 'e0' },
       ],
       { placeHolder: 'What should the Agent prompt contain?' },
     );
@@ -397,6 +508,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     }),
     vscode.workspace.onDidSaveTextDocument(refreshSoon),
     vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('gofl') && refresh()),
+    cmd('gofl.analyze', analyzeAny),
     cmd('gofl.analyzeLog', () => analyze(false)),
     cmd('gofl.analyzeSelection', () => analyze(true)),
     cmd('gofl.copyPrompt', copyPrompt),
