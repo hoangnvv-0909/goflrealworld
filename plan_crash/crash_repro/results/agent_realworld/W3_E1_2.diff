@@ -1,0 +1,13 @@
+### internal/handler/auth.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3860975405/internal/handler/auth.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-383023146/internal/handler/auth.go
+index bf9bad2..0ea6ae6 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3860975405/internal/handler/auth.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-383023146/internal/handler/auth.go
+@@ -133 +133,6 @@ func (h *AuthHandler) RefreshToken(w http.ResponseWriter, r *http.Request) {
+-			ttlHours = v.(int)
++			f, isNum := v.(float64)
++			if !isNum || f != float64(int(f)) {
++				http.Error(w, `{"error":"ttl_hours must be an integer"}`, http.StatusBadRequest)
++				return
++			}
++			ttlHours = int(f)

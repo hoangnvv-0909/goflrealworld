@@ -1,0 +1,77 @@
+fatal error: concurrent map writes
+
+goroutine 14 [running]:
+internal/runtime/maps.fatal({0x7ff65839f577?, 0x0?})
+	C:/Program Files/Go/src/runtime/panic.go:1046 +0x18
+goflsample/crash.(*Counter).Add(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash.go:68
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:50 +0x87
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0xc000003340, {0x7ff65839d6ee?, 0x7ff998613480?}, 0x7ff6583a9a38)
+	C:/Program Files/Go/src/testing/testing.go:2005 +0x469
+testing.runTests.func1(0xc000003340)
+	C:/Program Files/Go/src/testing/testing.go:2477 +0x37
+testing.tRunner(0xc000003340, 0xc00006fc70)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+testing.runTests(0xc0000082d0, {0x7ff6584e20e0, 0x15, 0x15}, {0x7?, 0xc00007a8c0?, 0x7ff6584e67e0?})
+	C:/Program Files/Go/src/testing/testing.go:2475 +0x4b4
+testing.(*M).Run(0xc000100780)
+	C:/Program Files/Go/src/testing/testing.go:2337 +0x63a
+main.main()
+	_testmain.go:85 +0x9b
+
+goroutine 6 [sync.WaitGroup.Wait]:
+sync.runtime_SemacquireWaitGroup(0xc0000083d8?, 0xc0?)
+	C:/Program Files/Go/src/runtime/sema.go:114 +0x2e
+sync.(*WaitGroup).Wait(0xc00000a210)
+	C:/Program Files/Go/src/sync/waitgroup.go:206 +0x85
+goflsample/crash.TestConcurrentMap(0xc000003500)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:54 +0x12f
+testing.tRunner(0xc000003500, 0x7ff6583a9a38)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+
+goroutine 7 [runnable]:
+goflsample/crash.(*Counter).Add(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash.go:68
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:50 +0x87
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 8 [runnable]:
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 10 [runnable]:
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 11 [runnable]:
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 12 [runnable]:
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+
+goroutine 13 [runnable]:
+goflsample/crash.TestConcurrentMap.func1()
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47
+created by goflsample/crash.TestConcurrentMap in goroutine 6
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/crash_test.go:47 +0xc5
+FAIL	goflsample/crash	0.421s
+FAIL

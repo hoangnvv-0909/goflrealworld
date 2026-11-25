@@ -1,0 +1,42 @@
+{
+  "Case": "W9",
+  "Mode": "E0",
+  "Run": 1,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 45.627477999999996,
+  "CostUSD": 0.11777679999999999,
+  "Turns": 11,
+  "InputTokens": 293253,
+  "OutputTokens": 2271,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/article.go",
+      "line": 202,
+      "func": "ArticleService.GetArticlesFeed"
+    },
+    {
+      "file": "internal/handler/article.go",
+      "line": 335,
+      "func": "ArticleHandler.GetArticlesFeed"
+    }
+  ],
+  "LocFile1": false,
+  "LocFile3": true,
+  "LocFunc1": false,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "ArticleHandler.GetArticlesFeed",
+    "ArticleService.GetArticlesFeed",
+    "NormalizeFeedLimit"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":24212,\"stop_reason\":\"end_turn\",\"session_id\":\"a3170b05-8b8e-4b76-8432-8aae0c9ae51c\",\"total_cost_usd\":0.11777679999999999,\"usage\":{\"input_tokens\":16,\"cache_creation_input_tokens\":16849,\"cache_read_input_tokens\":276388,\"output_tokens\":2271,\"output_tokens_details\":{\"thinking_tokens\":116},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":16849,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":368,\"cache_read_input_tokens\":40117,\"cache_creation_input_tokens\":309,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":309},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":16,\"outputTokens\":2271,\"cacheReadInputTokens\":276388,\"cacheCreationInputTokens\":16849,\"webSearchRequests\":0,\"costUSD\":0.11777679999999999,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":116,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":16849,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":11,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The divide-by-zero is fixed: `go test ./internal/app -run '^TestW9_' -count=1` now passes. The full `./internal/app` run still fails on `TestW1_CurrentUserDeleted`. That test panics with a nil pointer dereference, which is a different crash that I didn't touch. The panic stops the run, so I can't say whether other tests in that package pass. The other packages with tests (repository, service, utils) pass.\\n\\n**Cause:** the handler's default and maximum feed page size were applied only inside `ArticleService.GetArticlesFeed`, on a copy of the params. When a request had no `limit`, the handler's `params.Limit` stayed 0. It then divided by that 0 at `internal/handler/article.go:335` to work out `X-Total-Pages`.\\n\\n**Fix:**\\n- I added `service.NormalizeFeedLimit`, which returns the default of 10 for a missing limit and caps it at 100.\\n- The service uses it, and the handler now calls it before the service call, so both use the same effective limit.\\n\\nI wrote `gofl-localize.json` in the project root before making the change.\",\"ttft_ms\":2519,\"type\":\"result\",\"duration_ms\":42002,\"uuid\":\"b99a7383-c3d9-4978-ad4e-069dfbb81225\",\"ttft_stream_ms\":1751,\"time_to_request_ms\":222,\"first_content_frame_ms\":1752,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

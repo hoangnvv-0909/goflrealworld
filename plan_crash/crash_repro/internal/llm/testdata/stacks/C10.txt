@@ -1,0 +1,22 @@
+--- FAIL: TestCacheZeroCapacity (0.00s)
+panic: runtime error: index out of range [0] with length 0 [recovered, repanicked]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x7ff6f39da3a0, 0xc00001a270})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff6f39da3a0?, 0xc00001a270?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+goflsample/crash.(*Cache).evict(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:97
+goflsample/crash.(*Cache).Put(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:90
+goflsample/crash.TestCacheZeroCapacity(0xc000003500?)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard_test.go:25 +0x127
+testing.tRunner(0xc000003500, 0x7ff6f39f9a30)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+FAIL	goflsample/crash	0.400s
+FAIL

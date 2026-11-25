@@ -1,0 +1,23 @@
+--- FAIL: TestParsePortEmpty (0.00s)
+panic: strconv.Atoi: parsing "": invalid syntax [recovered]
+	panic: strconv.Atoi: parsing "": invalid syntax
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x553180, 0xc000092c00})
+	<goroot>/src/testing/testing.go:1734 +0x21c
+testing.tRunner.func1()
+	<goroot>/src/testing/testing.go:1737 +0x35e
+panic({0x553180?, 0xc000092c00?})
+	<goroot>/src/runtime/panic.go:792 +0x132
+goflsample/crash.must[...](...)
+	<root>/crash/hard.go:108
+goflsample/crash.ParsePort({0x0?, 0x4926f3?})
+	<root>/crash/hard.go:115 +0x2f
+goflsample/crash.TestParsePortEmpty(0xc000003880?)
+	<root>/crash/hard_test.go:37 +0x17
+testing.tRunner(0xc000003880, 0x585ee0)
+	<goroot>/src/testing/testing.go:1792 +0xf4
+created by testing.(*T).Run in goroutine 1
+	<goroot>/src/testing/testing.go:1851 +0x413
+FAIL	goflsample/crash	0.004s
+FAIL

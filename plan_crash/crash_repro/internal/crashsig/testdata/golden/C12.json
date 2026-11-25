@@ -1,0 +1,17 @@
+{
+  "Hash": "9e85c81dc817196a",
+  "Exception": "runtime error: invalid memory address or nil pointer dereference",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.(*Node).Total",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 130
+    },
+    {
+      "Func": "goflsample/crash.TestTotalLongList",
+      "File": "\u003croot\u003e/crash/hard_test.go",
+      "Line": 50
+    }
+  ]
+}

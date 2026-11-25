@@ -1,0 +1,9 @@
+panic: runtime error: index out of range [3] with length 3
+
+goroutine 9 [running]:
+goflsample/crash.Fanout.func1()
+	<root>/crash/hard.go:144 +0x93
+created by goflsample/crash.Fanout in goroutine 6
+	<root>/crash/hard.go:142 +0x57
+FAIL	goflsample/crash	0.005s
+FAIL

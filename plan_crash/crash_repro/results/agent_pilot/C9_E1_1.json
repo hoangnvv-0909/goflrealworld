@@ -1,0 +1,40 @@
+{
+  "Case": "C9",
+  "Mode": "E1",
+  "Run": 1,
+  "Model": "claude-opus-5-5",
+  "Seconds": 41.2162375,
+  "CostUSD": 0.24081000000000002,
+  "Turns": 11,
+  "InputTokens": 330133,
+  "OutputTokens": 2564,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "crash/hard.go",
+      "line": 57,
+      "func": "NewSession"
+    },
+    {
+      "file": "crash/hard.go",
+      "line": 63,
+      "func": "Session.Token"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "NewSession"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":29930,\"stop_reason\":\"end_turn\",\"session_id\":\"cc33a2d8-8a31-4bbf-b48e-4db9576f7953\",\"total_cost_usd\":0.24081000000000002,\"usage\":{\"input_tokens\":18,\"cache_creation_input_tokens\":15825,\"cache_read_input_tokens\":314290,\"output_tokens\":2564,\"output_tokens_details\":{\"thinking_tokens\":169},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":15825,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":666,\"cache_read_input_tokens\":38982,\"cache_creation_input_tokens\":420,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":420},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-opus-5-5\":{\"inputTokens\":18,\"outputTokens\":2564,\"cacheReadInputTokens\":314290,\"cacheCreationInputTokens\":15825,\"webSearchRequests\":0,\"costUSD\":0.24081000000000002,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":169,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":15825,\"canonicalModel\":\"claude-opus-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[{\"tool_name\":\"PowerShell\",\"tool_use_id\":\"toolu_01KNRjUn7pBScpgU1Y9MKX3e\",\"tool_input\":{\"command\":\"go test ./crash -run 'TestLoginAnon|TestLogoutAnon|TestRefreshAnon' 2\u003e\u00261 | Select-Object -First 12\",\"description\":\"Reproduce the crash\"}},{\"tool_name\":\"Bash\",\"tool_use_id\":\"toolu_01TWwbnYcDiPNUKVDDaHA71R\",\"tool_input\":{\"command\":\"cd \\\"C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-2144746962\\\" \u0026\u0026 for t in TestLoginAnon TestLogoutAnon TestRefreshAnon; do go test ./crash -run \\\"^$t\\\\$\\\" 2\u003e\u00261 | tail -1; done; go test ./crash -run 'OK$' -v 2\u003e\u00261 | grep -E '^(---|ok|FAIL)'; go list ./... ; go test $(go list ./... | grep -v /crash) 2\u003e\u00261 | tail -20\",\"description\":\"Run repro tests and the other tests\"}}],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":11,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The three crashing tests now pass. Every other test I ran passes too, except four in `./sem`, which were already failing and are unrelated to this change.\\n\\n**Root cause:** the crash shows up in `Session.Token` (`crash/hard.go:63`), but the bad value is created earlier. `NewSession(true)` returned `\u0026Session{}`, so anonymous sessions had a nil `auth`. `Login`, `Logout` and `Refresh` all call `Token`, which reads `s.auth.token`, so all three hit the same nil pointer.\\n\\n**Fix:** I fixed it in the constructor rather than adding a nil check in `Token`. Anonymous sessions now get `\u0026Session{auth: \u0026auth{}}`: they still have no credentials (the token is empty), but `auth` is never nil. I wrote `gofl-localize.json` before changing the code; it lists `NewSession` first and `Session.Token` second.\\n\\n**Test results:**\\n- `TestLoginAnon`, `TestLogoutAnon` and `TestRefreshAnon` pass.\\n- In `./crash`, the tests meant to pass (`TestSessionOK`, `TestRunOK`, `TestCacheOK`, `TestParsePortOK`, `TestEmailOfOK`) pass. The other tests in that package panic on purpose for other crash cases, so I didn't run them.\\n- `./perf` passes.\\n- `./sem` has four failing tests: `TestPagesPartial`, `TestSameDayLocal`, `TestMaxOfMany` and `TestSoftmaxLarge`. They are wrong-result failures, not crashes, and my change only touched `crash/hard.go`, so they can't come from it. I didn't run them before the edit, though, so I haven't confirmed that directly.\\n\\nOne thing to know about the behaviour change: an anonymous session's `Login()` now returns `\\\"login:\\\"` with an empty token instead of panicking.\",\"ttft_ms\":2292,\"type\":\"result\",\"duration_ms\":37098,\"uuid\":\"a4f60fea-b4ad-4789-9fdf-417a6cdaeebb\",\"ttft_stream_ms\":1743,\"time_to_request_ms\":172,\"first_content_frame_ms\":1743,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

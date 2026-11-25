@@ -1,0 +1,22 @@
+// Copy this file next to the code under test and change the package name.
+package yourpackage
+
+import (
+	"strconv"
+	"testing"
+)
+
+func BenchmarkWorkload(b *testing.B) {
+	for _, size := range []int{100, 10000} {
+		b.Run("size="+strconv.Itoa(size), func(b *testing.B) {
+			b.Skip("fill in the workload before profiling")
+			// TODO: Prepare a deterministic input of length size here.
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				// TODO: Run the code under test and retain the result if needed.
+			}
+			b.StopTimer()
+			// TODO: Check the result and remove b.Skip once the workload is ready.
+		})
+	}
+}

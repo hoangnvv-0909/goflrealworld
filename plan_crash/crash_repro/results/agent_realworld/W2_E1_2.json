@@ -1,0 +1,35 @@
+{
+  "Case": "W2",
+  "Mode": "E1",
+  "Run": 2,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 31.997632,
+  "CostUSD": 0.0862435,
+  "Turns": 7,
+  "InputTokens": 175767,
+  "OutputTokens": 1443,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/utils/slug.go",
+      "line": 27,
+      "func": "GenerateSlug"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "GenerateSlug"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":15295,\"stop_reason\":\"end_turn\",\"session_id\":\"0bfe5eff-1159-4bba-ac5c-5b94a010c2fc\",\"total_cost_usd\":0.0862435,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":13902,\"cache_read_input_tokens\":161855,\"output_tokens\":1443,\"output_tokens_details\":{\"thinking_tokens\":110},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13902,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":373,\"cache_read_input_tokens\":37036,\"cache_creation_input_tokens\":443,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":443},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":10,\"outputTokens\":1443,\"cacheReadInputTokens\":161855,\"cacheCreationInputTokens\":13902,\"webSearchRequests\":0,\"costUSD\":0.0862435,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":110,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":13902,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":7,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The two reproduce tests, `TestW2_CreateArticlePunctuatedTitle` and `TestW2_UpdateArticlePunctuatedTitle`, now pass. The full suite still has one failure, `TestW1_CurrentUserDeleted`, which I didn't fix. It is a nil-pointer panic in a different crash group, and I haven't confirmed it also failed before my change.\\n\\n**Root cause:** `GenerateSlug` in `internal/utils/slug.go` checked `len(title) \u003e 40` but then sliced the normalized slug with `slug[:40]`. A title with a lot of punctuation can be over 40 bytes while its slug, with each punctuation run collapsed to one hyphen, is only 6. That gave the \\\"[:40] with length 6\\\" panic.\\n\\n**Fix:** The length check now uses `len(slug)`. The cut also steps back to a rune boundary, so multi-byte characters aren't split. I wrote `gofl-localize.json` before changing the code, listing `GenerateSlug` as the location.\\n\\nThe service and handler files gofl ranked below it only pass the title along, so I left them alone.\",\"ttft_ms\":2172,\"type\":\"result\",\"duration_ms\":28350,\"uuid\":\"44695f94-f71c-4e42-a892-2a98fcc2afb3\",\"ttft_stream_ms\":1680,\"time_to_request_ms\":167,\"first_content_frame_ms\":1680,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

@@ -1,0 +1,26 @@
+# gofl crash benchmark (testdata/goflsample)
+
+Cases: 13. Pipeline rate: 100% (13/13 ran to a ranked output). Time: 56.0 s.
+
+| Configuration | file@1 | file@3 | file@5 | func@1 | func@3 | func@5 | line@1 | line@3 | line@5 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| gofl crash (no LLM) | 100% (13/13) | 100% (13/13) | 100% (13/13) | 77% (10/13) | 85% (11/13) | 85% (11/13) | 77% (10/13) | 85% (11/13) | 85% (11/13) |
+| baseline: first user frame | 100% (13/13) | 100% (13/13) | 100% (13/13) | 77% (10/13) | 77% (10/13) | 77% (10/13) | 77% (10/13) | 77% (10/13) | 77% (10/13) |
+
+Ranking vs baseline, file Acc@3: +0 points.
+
+| Case | Ran | Events | Groups | Top-1 | Note |
+|---|---|---:|---:|---|---|
+| C1 | true | 1 | 1 | `crash/crash.go:16` |  |
+| C2 | true | 1 | 1 | `crash/crash.go:21` |  |
+| C3 | true | 1 | 1 | `crash/crash.go:29` |  |
+| C4 | true | 1 | 1 | `crash/crash.go:38` |  |
+| C5 | true | 1 | 1 | `crash/crash.go:43` |  |
+| C6 | true | 1 | 1 | `crash/crash.go:49` |  |
+| C7 | true | 1 | 1 | `crash/crash.go:68` |  |
+| C8 | true | 1 | 1 | `crash/hard.go:42` |  |
+| C9 | true | 3 | 1 | `crash/hard.go:63` |  |
+| C10 | true | 1 | 1 | `crash/hard.go:97` |  |
+| C11 | true | 1 | 1 | `crash/hard.go:108` |  |
+| C12 | true | 1 | 1 | `crash/hard.go:130` |  |
+| C13 | true | 1 | 1 | `crash/hard.go:144` |  |

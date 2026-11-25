@@ -1,0 +1,39 @@
+# gofl.yaml: copy this file to the project root as gofl.yaml and fill it in.
+# Every key is optional; command-line flags override these values.
+# Relative paths (dir, out) are relative to this file.
+
+# Project root: the directory that holds go.mod.
+dir: .
+
+# Package that holds the benchmark. Leave it out to search every package.
+package: ./internal/report
+
+# Benchmark function, and the small and the large size.
+# Either the benchmark has one sub-benchmark per size whose name contains
+# the size (b.Run("n=100", ...)), or it reads the size from the GOFL_SIZE
+# environment variable (see bench_template_test.go).
+bench: BenchmarkBuildRows
+sizes: [100, 10000]
+
+# Limit for each setup command and each benchmark run (compiling gets at
+# least 10m). Go durations: 90s, 10m, 1h.
+timeout: 10m
+
+# go test -benchtime for each size (1s, 3s, or a count such as 100x).
+benchtime: 1s
+
+# Commands run in the project root before the benchmark, in order
+# (sh -c on Linux and macOS, cmd /C on Windows).
+# setup:
+#   - docker compose up -d db
+
+# Environment variables for setup, build and benchmark.
+# env:
+#   DATABASE_URL: postgres://user:pass@localhost:5432/app?sslmode=disable
+#   GOFLAGS: -mod=mod
+
+# Output directory: base.pprof, scaled.pprof, run.json, diagnostics.json, logs.
+out: out
+
+# How diffprof.Paths extracts paths: paper (default) or stack.
+paths_method: paper

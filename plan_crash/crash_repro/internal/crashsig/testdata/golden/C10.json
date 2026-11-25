@@ -1,0 +1,22 @@
+{
+  "Hash": "da230916c1de89ac",
+  "Exception": "runtime error: index out of range [#] with length #",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.(*Cache).evict",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 97
+    },
+    {
+      "Func": "goflsample/crash.(*Cache).Put",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 90
+    },
+    {
+      "Func": "goflsample/crash.TestCacheZeroCapacity",
+      "File": "\u003croot\u003e/crash/hard_test.go",
+      "Line": 25
+    }
+  ]
+}

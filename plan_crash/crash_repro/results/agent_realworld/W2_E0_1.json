@@ -1,0 +1,35 @@
+{
+  "Case": "W2",
+  "Mode": "E0",
+  "Run": 1,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 29.0159932,
+  "CostUSD": 0.0814673,
+  "Turns": 6,
+  "InputTokens": 135031,
+  "OutputTokens": 1331,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/utils/slug.go",
+      "line": 27,
+      "func": "GenerateSlug"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "GenerateSlug"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":10676,\"stop_reason\":\"end_turn\",\"session_id\":\"47cba7bb-42b5-4dbd-8005-3a099c610d41\",\"total_cost_usd\":0.0814673,\"usage\":{\"input_tokens\":8,\"cache_creation_input_tokens\":14010,\"cache_read_input_tokens\":121013,\"output_tokens\":1331,\"output_tokens_details\":{\"thinking_tokens\":86},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":14010,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":407,\"cache_read_input_tokens\":37125,\"cache_creation_input_tokens\":462,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":462},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":8,\"outputTokens\":1331,\"cacheReadInputTokens\":121013,\"cacheCreationInputTokens\":14010,\"webSearchRequests\":0,\"costUSD\":0.0814673,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":86,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":14010,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":6,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"The two W2 tests no longer crash and now pass. `TestW1_CurrentUserDeleted` still panics, and I did not fix it.\\n\\n**Root cause:** `GenerateSlug` in `internal/utils/slug.go` decided whether to truncate by checking `len(title) \u003e 40`. It then sliced the normalized slug with `slug[:40]`. A punctuation-heavy title is long, but its slug collapses to a few characters (6 here), so the slice went out of range. I changed it to measure and truncate the slug itself, counting runes. That also stops it cutting a multi-byte character in half. Both create and update go through this function, so both entry points are fixed.\\n\\n**Localization:** `gofl-localize.json` is written in the project root, before the fix.\\n\\n**Other tests:**\\n- **`TestW1_CurrentUserDeleted`:** it hits a nil pointer dereference, which looks like a different crash. I didn't check whether it failed before my change. Because of that panic, `go test` aborts the `internal/app` package early, so other tests in that package may not have run.\\n- **Other packages:** `repository`, `service` and `utils` pass.\",\"ttft_ms\":1279,\"type\":\"result\",\"duration_ms\":25331,\"uuid\":\"3b26ca4b-1cd7-4504-80a2-45ec79b5f221\",\"ttft_stream_ms\":955,\"time_to_request_ms\":210,\"first_content_frame_ms\":955,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

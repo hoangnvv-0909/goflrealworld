@@ -1,0 +1,17 @@
+{
+  "Hash": "d740417b3bcd57c0",
+  "Exception": "",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "main.(*Store).Save",
+      "File": "\u003croot\u003e/main.go",
+      "Line": 18
+    },
+    {
+      "Func": "main.main",
+      "File": "\u003croot\u003e/main.go",
+      "Line": 21
+    }
+  ]
+}

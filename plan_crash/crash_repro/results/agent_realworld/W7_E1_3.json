@@ -1,0 +1,35 @@
+{
+  "Case": "W7",
+  "Mode": "E1",
+  "Run": 3,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 31.0065378,
+  "CostUSD": 0.10195660000000001,
+  "Turns": 11,
+  "InputTokens": 220476,
+  "OutputTokens": 1882,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/handler/comment.go",
+      "line": 137,
+      "func": "CommentHandler.DeleteComment"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "CommentHandler.DeleteComment"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":15735,\"stop_reason\":\"end_turn\",\"session_id\":\"03127fc1-2724-4fc4-a2c1-4b2069c9465c\",\"total_cost_usd\":0.10195660000000001,\"usage\":{\"input_tokens\":12,\"cache_creation_input_tokens\":15658,\"cache_read_input_tokens\":204806,\"output_tokens\":1882,\"output_tokens_details\":{\"thinking_tokens\":34},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":15658,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":312,\"cache_read_input_tokens\":39061,\"cache_creation_input_tokens\":174,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":174},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":12,\"outputTokens\":1882,\"cacheReadInputTokens\":204806,\"cacheCreationInputTokens\":15658,\"webSearchRequests\":0,\"costUSD\":0.10195660000000001,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":34,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":15658,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":11,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"`DeleteComment` no longer panics on a non-numeric comment id; it now returns 400 Bad Request. `go test ./internal/app -run '^TestW7_' -count=1` passes and the project builds. I did not run the rest of the test suite. The other W-tests in `crash_test.go` are expected to panic, since they cover separate seeded bugs, so a full run would still show those.\\n\\nThe cause was in `internal/handler/comment.go`. The handler parsed the `id` from the URL path with `utils.Must(strconv.Atoi(...))`, and `Must` panics on any error, so any bad URL could crash it. I replaced that with a normal `strconv.Atoi` error check that responds `{\\\"error\\\":\\\"Invalid comment id\\\"}` with status 400. I also removed the `utils` import from that file, since it was no longer used there.\\n\\nI wrote `gofl-localize.json` in the project root before making the change, listing `DeleteComment` as the single location.\",\"ttft_ms\":1868,\"type\":\"result\",\"duration_ms\":27207,\"uuid\":\"f7646e4c-a3f1-44dd-bc44-530b2184f29e\",\"ttft_stream_ms\":1269,\"time_to_request_ms\":215,\"first_content_frame_ms\":1270,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

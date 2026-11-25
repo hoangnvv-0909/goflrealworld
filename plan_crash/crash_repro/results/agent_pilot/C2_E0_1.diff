@@ -1,0 +1,8 @@
+### crash/crash.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-490291713/crash/crash.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1937333385/crash/crash.go
+index 57672ec..575856d 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-490291713/crash/crash.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1937333385/crash/crash.go
+@@ -21 +21 @@ func Nth(xs []int, n int) int {
+-	return xs[n]
++	return xs[n-1]

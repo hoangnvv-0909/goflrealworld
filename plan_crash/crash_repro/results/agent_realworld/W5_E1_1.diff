@@ -1,0 +1,24 @@
+### internal/service/comment.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3491036878/internal/service/comment.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3650900627/internal/service/comment.go
+index 81b35a2..8f77ebc 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-3491036878/internal/service/comment.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3650900627/internal/service/comment.go
+@@ -85,7 +85,6 @@ func (s *CommentService) DeleteComment(commentID, authorID int) error {
+-	var comment *model.Comment
+-	if commentID > 0 {
+-		comment, err := s.commentRepo.GetByID(commentID)
+-		if err != nil {
+-			return fmt.Errorf("failed to get comment: %w", err)
+-		}
+-		log.Printf("comment %d on article %d: delete requested by user %d", comment.ID, comment.ArticleID, authorID)
++	comment, err := s.commentRepo.GetByID(commentID)
++	if err != nil {
++		return fmt.Errorf("failed to get comment: %w", err)
++	}
++	if comment == nil {
++		return fmt.Errorf("failed to get comment: comment not found")
+@@ -92,0 +92 @@ func (s *CommentService) DeleteComment(commentID, authorID int) error {
++	log.Printf("comment %d on article %d: delete requested by user %d", comment.ID, comment.ArticleID, authorID)
+@@ -100 +100 @@ func (s *CommentService) DeleteComment(commentID, authorID int) error {
+-	err := s.commentRepo.Delete(commentID)
++	err = s.commentRepo.Delete(commentID)

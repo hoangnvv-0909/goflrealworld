@@ -1,0 +1,14 @@
+### internal/handler/comment.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-365255017/internal/handler/comment.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1330430510/internal/handler/comment.go
+index eb1da28..488a892 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-365255017/internal/handler/comment.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1330430510/internal/handler/comment.go
+@@ -12 +11,0 @@ import (
+-	"goflrealworld/internal/utils"
+@@ -137 +136,5 @@ func (h *CommentHandler) DeleteComment(w http.ResponseWriter, r *http.Request) {
+-	commentID := utils.Must(strconv.Atoi(commentIDStr))
++	commentID, convErr := strconv.Atoi(commentIDStr)
++	if convErr != nil {
++		http.Error(w, `{"error":"Invalid comment ID"}`, http.StatusBadRequest)
++		return
++	}

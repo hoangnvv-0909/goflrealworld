@@ -1,0 +1,567 @@
+{
+  "Cases": [
+    {
+      "ID": "C1",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 16,
+          "func": "goflsample/crash.EmailOf"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 10,
+          "func": "goflsample/crash.TestEmailOfNilProfile"
+        }
+      ],
+      "Seconds": 6.9343957,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 16,
+        "func": "goflsample/crash.EmailOf"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C2",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 21,
+          "func": "goflsample/crash.Nth"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 23,
+          "func": "goflsample/crash.TestNth"
+        }
+      ],
+      "Seconds": 17.2515882,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 21,
+        "func": "goflsample/crash.Nth"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C3",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 29,
+          "func": "goflsample/crash.(*Registry).Inc"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 25,
+          "func": "goflsample/crash.TestInc"
+        }
+      ],
+      "Seconds": 4.2769165000000005,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 29,
+        "func": "goflsample/crash.(*Registry).Inc"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C4",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 38,
+          "func": "goflsample/crash.Average"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 27,
+          "func": "goflsample/crash.TestAverageEmpty"
+        }
+      ],
+      "Seconds": 1.8031443,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 38,
+        "func": "goflsample/crash.Average"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C5",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 43,
+          "func": "goflsample/crash.Describe"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 29,
+          "func": "goflsample/crash.TestDescribe"
+        }
+      ],
+      "Seconds": 2.7183821999999997,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 43,
+        "func": "goflsample/crash.Describe"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C6",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 49,
+          "func": "goflsample/crash.Finish"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 34,
+          "func": "goflsample/crash.TestFinishTwice"
+        }
+      ],
+      "Seconds": 2.4415279,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 49,
+        "func": "goflsample/crash.Finish"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C7",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/crash.go",
+          "line": 68,
+          "func": "goflsample/crash.(*Counter).Add"
+        },
+        {
+          "file": "crash/crash_test.go",
+          "line": 50,
+          "func": "goflsample/crash.TestConcurrentMap"
+        }
+      ],
+      "Seconds": 3.1348903,
+      "Baseline": {
+        "file": "crash/crash.go",
+        "line": 68,
+        "func": "goflsample/crash.(*Counter).Add"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C8",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 42,
+          "func": "goflsample/crash.parseKV"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 34,
+          "func": "goflsample/crash.stageBuild"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 28,
+          "func": "goflsample/crash.stageClean"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 7,
+          "func": "goflsample/crash.TestRunMissingEquals"
+        }
+      ],
+      "Seconds": 2.3454418,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 42,
+        "func": "goflsample/crash.parseKV"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C9",
+      "Ran": true,
+      "Why": "",
+      "Events": 3,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 63,
+          "func": "goflsample/crash.(*Session).Token"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 65,
+          "func": "goflsample/crash.(*Session).Login"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 66,
+          "func": "goflsample/crash.(*Session).Logout"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 15,
+          "func": "goflsample/crash.TestLoginAnon"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 16,
+          "func": "goflsample/crash.TestLogoutAnon"
+        }
+      ],
+      "Seconds": 6.6381693,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 63,
+        "func": "goflsample/crash.(*Session).Token"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C10",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 97,
+          "func": "goflsample/crash.(*Cache).evict"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 90,
+          "func": "goflsample/crash.(*Cache).Put"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 25,
+          "func": "goflsample/crash.TestCacheZeroCapacity"
+        }
+      ],
+      "Seconds": 1.8929361,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 97,
+        "func": "goflsample/crash.(*Cache).evict"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C11",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 108,
+          "func": "goflsample/crash.must"
+        },
+        {
+          "file": "crash/hard.go",
+          "line": 115,
+          "func": "goflsample/crash.ParsePort"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 37,
+          "func": "goflsample/crash.TestParsePortEmpty"
+        }
+      ],
+      "Seconds": 1.8879964999999999,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 108,
+        "func": "goflsample/crash.must[...]"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C12",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 130,
+          "func": "goflsample/crash.(*Node).Total"
+        },
+        {
+          "file": "crash/hard_test.go",
+          "line": 50,
+          "func": "goflsample/crash.TestTotalLongList"
+        }
+      ],
+      "Seconds": 2.1515317,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 130,
+        "func": "goflsample/crash.(*Node).Total"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "C13",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "crash/hard.go",
+          "line": 144,
+          "func": "goflsample/crash.Fanout"
+        }
+      ],
+      "Seconds": 2.47761,
+      "Baseline": {
+        "file": "crash/hard.go",
+        "line": 144,
+        "func": "goflsample/crash.Fanout.func1"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    }
+  ],
+  "Ranking": {
+    "File": {
+      "1": {
+        "Hit": 13,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 13,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 13,
+        "Total": 13
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 11,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 11,
+        "Total": 13
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 11,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 11,
+        "Total": 13
+      }
+    }
+  },
+  "Baseline": {
+    "File": {
+      "1": {
+        "Hit": 13,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 13,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 13,
+        "Total": 13
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 10,
+        "Total": 13
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "3": {
+        "Hit": 10,
+        "Total": 13
+      },
+      "5": {
+        "Hit": 10,
+        "Total": 13
+      }
+    }
+  },
+  "WithLLM": {
+    "File": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    }
+  },
+  "LLMQuorum": {
+    "File": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    }
+  },
+  "Ran": 13,
+  "Total": 13,
+  "UsedLLM": false,
+  "LLMRuns": 5,
+  "LLMFailed": 0,
+  "TotalSeconds": 55.9545305
+}

@@ -1,0 +1,11 @@
+goroutine 1 [running]:
+runtime/debug.Stack()
+	<goroot>/src/runtime/debug/stack.go:26 +0x5e
+main.(*Store).Save.func1()
+	<root>/main.go:14 +0x25
+panic({0x4a0ca0?, 0x55a1a0?})
+	<goroot>/src/runtime/panic.go:792 +0x132
+main.(*Store).Save(0x0?)
+	<root>/main.go:18 +0x45
+main.main()
+	<root>/main.go:21 +0x18

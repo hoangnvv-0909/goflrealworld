@@ -1,0 +1,210 @@
+--- FAIL: TestTotalLongList (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x8 pc=0x7ff79b2a373c]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x7ff79b2d0a60, 0x7ff79b438de0})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff79b2d0a60?, 0x7ff79b438de0?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c520)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x1c
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c540)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c560)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c580)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c5a0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c5c0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c5e0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c600)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c620)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c640)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c660)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c680)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c6a0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c6c0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c6e0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c700)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c720)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c740)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c760)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c780)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c7a0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c7c0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002c7e0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+...56 frames elided...
+goflsample/crash.(*Node).Total(0xc00002cb80)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cba0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cbc0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cbe0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cc00)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cc20)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cc40)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cc60)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cc80)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cca0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002ccc0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cce0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cd00)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cd20)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cd40)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cd60)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cd80)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cda0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cdc0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002cde0)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002ce00)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002ce20)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002ce40)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.(*Node).Total(0xc00002ce60)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130 +0x25
+goflsample/crash.(*Node).Total(...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:130
+goflsample/crash.TestTotalLongList(0xc000003500?)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard_test.go:50 +0x78
+testing.tRunner(0xc000003500, 0x7ff79b309ac0)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+FAIL	goflsample/crash	0.464s
+FAIL

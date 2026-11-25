@@ -1,0 +1,35 @@
+{
+  "Case": "W8",
+  "Mode": "E0",
+  "Run": 1,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 37.9694338,
+  "CostUSD": 0.12765540000000003,
+  "Turns": 9,
+  "InputTokens": 242104,
+  "OutputTokens": 1841,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/repository/article.go",
+      "line": 66,
+      "func": "ArticleRepository.GetBySlug"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "ArticleRepository.GetBySlug"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":19573,\"stop_reason\":\"end_turn\",\"session_id\":\"2c5cc840-4ec7-499a-aecd-94269a7dc3ce\",\"total_cost_usd\":0.12765540000000003,\"usage\":{\"input_tokens\":12,\"cache_creation_input_tokens\":21798,\"cache_read_input_tokens\":220294,\"output_tokens\":1841,\"output_tokens_details\":{\"thinking_tokens\":116},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":21798,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":393,\"cache_read_input_tokens\":44987,\"cache_creation_input_tokens\":388,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":388},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":12,\"outputTokens\":1841,\"cacheReadInputTokens\":220294,\"cacheCreationInputTokens\":21798,\"webSearchRequests\":0,\"costUSD\":0.12765540000000003,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":116,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":21798,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":9,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the crash. All four `TestW8_*` tests now pass, but `go test ./...` still fails because `TestW1_CurrentUserDeleted` panics.\\n\\n**Root cause:** `ArticleRepository.GetBySlug` (`internal/repository/article.go`) returned `nil, nil` when no article matched the slug. Five service functions only checked `err` and then used the nil article: `GetArticleBySlug`, `UpdateArticle`, `DeleteArticle`, `FavoriteArticle` and `UnfavoriteArticle`. A missing slug therefore caused the nil dereference.\\n\\n**Fix:** `GetBySlug` now returns `fmt.Errorf(\\\"article not found\\\")` on `sql.ErrNoRows`. The handlers already match on that text, so a missing article should now give a 404 instead of a panic. I didn't test the status codes. I wrote `gofl-localize.json` before making the change.\\n\\n**Full suite:** `TestW1_CurrentUserDeleted` crashes in `middleware/jwt.go:55`, which is a separate bug from this group. I didn't touch it or check it against the original code. The repository, service and utils test packages pass.\",\"ttft_ms\":2199,\"type\":\"result\",\"duration_ms\":34421,\"uuid\":\"10f025c1-5ad6-4007-a94a-ba141e8b9f44\",\"ttft_stream_ms\":1802,\"time_to_request_ms\":158,\"first_content_frame_ms\":1803,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

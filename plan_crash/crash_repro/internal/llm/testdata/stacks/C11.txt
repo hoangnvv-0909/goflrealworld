@@ -1,0 +1,22 @@
+--- FAIL: TestParsePortEmpty (0.00s)
+panic: strconv.Atoi: parsing "": invalid syntax [recovered, repanicked]
+
+goroutine 6 [running]:
+testing.tRunner.func1.2({0x7ff7c0bb2d20, 0xc000026fc0})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff7c0bb2d20?, 0xc000026fc0?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+goflsample/crash.must[...](...)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:108
+goflsample/crash.ParsePort({0x0?, 0x1feefa1897?})
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard.go:115 +0x2f
+goflsample/crash.TestParsePortEmpty(0xc000003500?)
+	D:/NL&TKTT/gofl/testdata/goflsample/crash/hard_test.go:37 +0x17
+testing.tRunner(0xc000003500, 0x7ff7c0be9a88)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+FAIL	goflsample/crash	0.423s
+FAIL

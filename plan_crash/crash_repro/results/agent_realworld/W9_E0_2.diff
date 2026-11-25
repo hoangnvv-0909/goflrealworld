@@ -1,0 +1,16 @@
+### internal/handler/article.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-1073415663/internal/handler/article.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3828811956/internal/handler/article.go
+index df931bd..ec8b0c7 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-1073415663/internal/handler/article.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-3828811956/internal/handler/article.go
+@@ -335 +335,9 @@ func (h *ArticleHandler) GetArticlesFeed(w http.ResponseWriter, r *http.Request)
+-	pages := (response.ArticlesCount + params.Limit - 1) / params.Limit
++	// The service applies defaults to its own copy of params, so mirror them here.
++	effLimit := params.Limit
++	if effLimit <= 0 {
++		effLimit = 10
++	}
++	if effLimit > 100 {
++		effLimit = 100
++	}
++	pages := (response.ArticlesCount + effLimit - 1) / effLimit

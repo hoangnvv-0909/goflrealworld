@@ -1,0 +1,40 @@
+{
+  "Case": "W4",
+  "Mode": "E0",
+  "Run": 3,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 19.5632622,
+  "CostUSD": 0.0801231,
+  "Turns": 6,
+  "InputTokens": 141566,
+  "OutputTokens": 953,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/service/tag.go",
+      "line": 149,
+      "func": "TagService.invalidatePopular"
+    },
+    {
+      "file": "internal/service/tag.go",
+      "line": 47,
+      "func": "TagService.GetPopularTags"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "TagService.invalidatePopular"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":11106,\"stop_reason\":\"end_turn\",\"session_id\":\"d4543486-59e4-4a32-bf5b-317e01293e6e\",\"total_cost_usd\":0.0801231,\"usage\":{\"input_tokens\":8,\"cache_creation_input_tokens\":14467,\"cache_read_input_tokens\":127091,\"output_tokens\":953,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":14467,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":245,\"cache_read_input_tokens\":37868,\"cache_creation_input_tokens\":176,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":176},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":8,\"outputTokens\":953,\"cacheReadInputTokens\":127091,\"cacheCreationInputTokens\":14467,\"webSearchRequests\":0,\"costUSD\":0.0801231,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":0,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":14467,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":6,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the crash. `go test ./internal/app -run '^TestW4_' -count=1` now passes. I didn't run the rest of the project's tests. The other W-tests in `crash_test.go` are written to panic, so a full run would still abort on those.\\n\\nThe cause was in `internal/service/tag.go`. `invalidatePopular` cleared the popular-tags cache by setting `s.popular = nil`. Creating a tagged article calls it, so the next `GetPopularTags` call (from `GET /api/tags`) wrote to a nil map and panicked.\\n\\nThe fix is one line: `invalidatePopular` now resets the cache to `make(map[int][]string)`. I wrote `gofl-localize.json` in the project root before making the change.\",\"ttft_ms\":2606,\"type\":\"result\",\"duration_ms\":16094,\"uuid\":\"fe7c8073-95c6-4cc6-a577-6164300d7113\",\"ttft_stream_ms\":1693,\"time_to_request_ms\":242,\"first_content_frame_ms\":1694,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

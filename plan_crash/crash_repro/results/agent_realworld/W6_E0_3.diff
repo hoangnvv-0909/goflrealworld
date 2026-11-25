@@ -1,0 +1,8 @@
+### internal/service/comment.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-184461955/internal/service/comment.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1101929408/internal/service/comment.go
+index 81b35a2..adaec60 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-184461955/internal/service/comment.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1101929408/internal/service/comment.go
+@@ -126 +126 @@ func mentions(body string) []string {
+-		if word[0] == '@' && isNameChar(word[1]) {
++		if len(word) > 1 && word[0] == '@' && isNameChar(word[1]) {

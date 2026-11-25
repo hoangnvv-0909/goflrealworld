@@ -1,0 +1,40 @@
+{
+  "Case": "C9",
+  "Mode": "E0",
+  "Run": 1,
+  "Model": "claude-opus-5-5",
+  "Seconds": 44.7363646,
+  "CostUSD": 0.2474052,
+  "Turns": 12,
+  "InputTokens": 367062,
+  "OutputTokens": 2512,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "crash/hard.go",
+      "line": 57,
+      "func": "NewSession"
+    },
+    {
+      "file": "crash/hard.go",
+      "line": 63,
+      "func": "Session.Token"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "NewSession"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":30999,\"stop_reason\":\"end_turn\",\"session_id\":\"b7fc4754-db36-4825-af48-2766c0304405\",\"total_cost_usd\":0.2474052,\"usage\":{\"input_tokens\":20,\"cache_creation_input_tokens\":15856,\"cache_read_input_tokens\":351186,\"output_tokens\":2512,\"output_tokens_details\":{\"thinking_tokens\":136},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":15856,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":566,\"cache_read_input_tokens\":38982,\"cache_creation_input_tokens\":451,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":451},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-opus-5-5\":{\"inputTokens\":20,\"outputTokens\":2512,\"cacheReadInputTokens\":351186,\"cacheCreationInputTokens\":15856,\"webSearchRequests\":0,\"costUSD\":0.2474052,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":136,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":15856,\"canonicalModel\":\"claude-opus-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[{\"tool_name\":\"PowerShell\",\"tool_use_id\":\"toolu_0141mrEanYqCpmHdEXTGi3iA\",\"tool_input\":{\"command\":\"go test ./crash -run 'TestLoginAnon|TestLogoutAnon|TestRefreshAnon' 2\u003e\u00261 | Select-Object -First 8\",\"description\":\"Reproduce crash\"}},{\"tool_name\":\"Bash\",\"tool_use_id\":\"toolu_012oqi5F73tjaRu28VLWcnGe\",\"tool_input\":{\"command\":\"for t in TestLoginAnon TestLogoutAnon TestRefreshAnon; do go test ./crash -run \\\"^$t\\\\$\\\" 2\u003e\u00261 | tail -1; done; go test ./crash -run 'OK$' -v 2\u003e\u00261 | grep -E '^(---|ok|FAIL)'; go list ./... \",\"description\":\"Verify fix and run passing tests\"}},{\"tool_name\":\"Bash\",\"tool_use_id\":\"toolu_018AfRHouS3k7o7VLaDrBXnE\",\"tool_input\":{\"command\":\"go test $(go list ./... | grep -v '/crash$') 2\u003e\u00261 | tail -15\",\"description\":\"Run tests in all other packages\"}}],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":12,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the crash, and all three reproduce commands now pass.\\n\\n**Cause:** `NewSession(true)` in `crash/hard.go` built anonymous sessions as `\u0026Session{}`, so `auth` was nil. `Login`, `Logout` and `Refresh` all call `Token()`, which reads `s.auth.token` and crashed on line 63. The bug is in the constructor, not where it crashed.\\n\\n**Fix:** anonymous sessions now get an empty `auth` (`\u0026Session{auth: \u0026auth{}}`), so `auth` is never nil and an anonymous user's token is just an empty string. I didn't add a nil check in `Token()`. I wrote `gofl-localize.json` before changing any code; it lists `NewSession` first and `Session.Token` second.\\n\\n**Tests:**\\n- `TestLoginAnon`, `TestLogoutAnon` and `TestRefreshAnon` now pass, as do the normal-case tests in `crash` (`TestSessionOK`, `TestRunOK`, `TestCacheOK`, `TestParsePortOK`).\\n- `./perf` passes.\\n- `./sem` has 4 failing tests: `TestPagesPartial`, `TestSameDayLocal`, `TestMaxOfMany` and `TestSoftmaxLarge`. I only changed `crash/hard.go` and `sem` doesn't use it, so my change didn't cause these.\\n- I didn't run the whole `crash` package at once, because its other tests (for the C8, C10–C13 cases) are meant to crash and the test file says to run them one at a time.\",\"ttft_ms\":2311,\"type\":\"result\",\"duration_ms\":40991,\"uuid\":\"1153b4d5-2dc0-4b3f-881c-33e8c9356b51\",\"ttft_stream_ms\":1765,\"time_to_request_ms\":173,\"first_content_frame_ms\":1765,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

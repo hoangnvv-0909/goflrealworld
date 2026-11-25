@@ -1,0 +1,17 @@
+{
+  "Hash": "4096819fdfb936fe",
+  "Exception": "runtime error: invalid memory address or nil pointer dereference",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.EmailOf",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 16
+    },
+    {
+      "Func": "goflsample/crash.TestEmailOfNilProfile",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 10
+    }
+  ]
+}

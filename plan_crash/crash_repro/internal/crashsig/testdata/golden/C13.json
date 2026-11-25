@@ -1,0 +1,12 @@
+{
+  "Hash": "8db4ae8b1623238c",
+  "Exception": "runtime error: index out of range [#] with length #",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.Fanout",
+      "File": "\u003croot\u003e/crash/hard.go",
+      "Line": 144
+    }
+  ]
+}

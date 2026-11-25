@@ -1,0 +1,8 @@
+### internal/repository/article.go
+diff --git a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2378518404/internal/repository/article.go b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1208590323/internal/repository/article.go
+index 4956085..500c193 100644
+--- a/C:/Users/hnguy/AppData/Local/Temp/goflagent-before-2378518404/internal/repository/article.go
++++ b/C:/Users/hnguy/AppData/Local/Temp/goflagent-ws-1208590323/internal/repository/article.go
+@@ -66 +66 @@ func (r *ArticleRepository) GetBySlug(slug string) (*model.Article, error) {
+-			return nil, nil
++			return nil, fmt.Errorf("article not found")

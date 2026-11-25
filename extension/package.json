@@ -1,0 +1,100 @@
+{
+  "name": "gofl-vscode",
+  "displayName": "gofl",
+  "version": "0.3.0",
+  "description": "gofl for VS Code: turn a crash log into a prompt for a repair Agent, mark the suspect files, and compare the Agent's fix.",
+  "publisher": "gofl",
+  "license": "UNLICENSED",
+  "main": "./out/src/extension.js",
+  "engines": { "vscode": "^1.90.0" },
+  "categories": ["Debuggers", "Other"],
+  "activationEvents": ["onStartupFinished"],
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "test": "tsc -p . && node --test \"out/test/*.test.js\"",
+    "package": "tsc -p . && vsce package --allow-missing-repository --skip-license"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.9.3"
+  },
+  "contributes": {
+    "commands": [
+      { "command": "gofl.analyze", "title": "gofl: Analyze (crash or slow benchmark)", "icon": "$(sparkle)" },
+      { "command": "gofl.analyzeLog", "title": "gofl: Generate Agent prompt from a crash log" },
+      { "command": "gofl.analyzeSelection", "title": "gofl: Generate Agent prompt from selection" },
+      { "command": "gofl.copyPrompt", "title": "gofl: Copy Agent prompt", "icon": "$(copy)" },
+      { "command": "gofl.showPrompt", "title": "gofl: Show Agent prompt" },
+      { "command": "gofl.setMode", "title": "gofl: Choose prompt mode (E0 or E1)" },
+      { "command": "gofl.showChanges", "title": "gofl: Compare the Agent's changes", "icon": "$(diff)" },
+      { "command": "gofl.reloadAgent", "title": "gofl: Reload the Agent's localisation", "icon": "$(refresh)" },
+      { "command": "gofl.clearSession", "title": "gofl: Clear notes", "icon": "$(clear-all)" },
+      { "command": "gofl.openReport", "title": "gofl: Open JSON report" },
+      { "command": "gofl.profileBenchmark", "title": "gofl: Profile benchmark (gofl perf)" },
+      { "command": "gofl.openLocation", "title": "gofl: Open location" }
+    ],
+    "menus": {
+      "commandPalette": [{ "command": "gofl.openLocation", "when": "false" }],
+      "editor/context": [{ "command": "gofl.analyzeSelection", "when": "editorHasSelection", "group": "gofl@1" }],
+      "view/title": [
+        { "command": "gofl.analyze", "when": "view == goflResults", "group": "navigation@1" },
+        { "command": "gofl.copyPrompt", "when": "view == goflResults", "group": "navigation@2" },
+        { "command": "gofl.showChanges", "when": "view == goflResults", "group": "navigation@3" },
+        { "command": "gofl.reloadAgent", "when": "view == goflResults", "group": "navigation@4" },
+        { "command": "gofl.clearSession", "when": "view == goflResults", "group": "navigation@5" }
+      ]
+    },
+    "views": {
+      "explorer": [{ "id": "goflResults", "name": "gofl" }]
+    },
+    "viewsWelcome": [
+      {
+        "view": "goflResults",
+        "contents": "Turn a crash log or a slow benchmark into a prompt for a repair Agent.\n[Analyze a crash or a slow benchmark](command:gofl.analyze)\n[Crash log](command:gofl.analyzeLog) [Benchmark](command:gofl.profileBenchmark)\nSelect a stack trace in any editor, then right-click and choose **gofl: Generate Agent prompt from selection**."
+      }
+    ],
+    "colors": [
+      { "id": "gofl.suspectBackground", "description": "Function gofl suspects", "defaults": { "dark": "#d1842a22", "light": "#d1842a22", "highContrast": "#d1842a55" } },
+      { "id": "gofl.suspectForeground", "description": "Label of a suspect function", "defaults": { "dark": "#e0a050", "light": "#a05a00", "highContrast": "#ffcc66" } },
+      { "id": "gofl.agentBackground", "description": "Function the Agent names", "defaults": { "dark": "#3b82f622", "light": "#3b82f622", "highContrast": "#3b82f655" } },
+      { "id": "gofl.agentForeground", "description": "Label of the Agent's localisation", "defaults": { "dark": "#6aa5ff", "light": "#1d5fd0", "highContrast": "#99c2ff" } },
+      { "id": "gofl.addedBackground", "description": "Lines the Agent added or changed", "defaults": { "dark": "#2ea04322", "light": "#2ea04333", "highContrast": "#2ea04355" } },
+      { "id": "gofl.addedForeground", "description": "Label of added lines", "defaults": { "dark": "#56d364", "light": "#1a7f37", "highContrast": "#7ee787" } },
+      { "id": "gofl.removedBackground", "description": "Where the Agent removed lines", "defaults": { "dark": "#f8514933", "light": "#f8514933", "highContrast": "#f8514966" } },
+      { "id": "gofl.removedForeground", "description": "Label of removed lines", "defaults": { "dark": "#ff7b72", "light": "#cf222e", "highContrast": "#ffa198" } }
+    ],
+    "configuration": {
+      "title": "gofl",
+      "properties": {
+        "gofl.path": { "type": "string", "default": "gofl", "description": "Path of the gofl binary." },
+        "gofl.agentMode": {
+          "type": "string", "enum": ["e1", "e0"], "default": "e1",
+          "enumDescriptions": ["E1: the facts plus the top 3 files gofl suspects", "E0: the facts only, no ranking (the control)"],
+          "description": "What the Agent prompt contains."
+        },
+        "gofl.repro": {
+          "type": "array", "items": { "type": "string" }, "default": [],
+          "description": "Commands that reproduce the crash, e.g. \"go test ./crash -run TestNth\". A log does not contain them; the Agent uses them to check its fix."
+        },
+        "gofl.crashArgs": {
+          "type": "array", "items": { "type": "string" }, "default": [],
+          "description": "Extra arguments for gofl crash, e.g. [\"-profile\", \"svc.json\"]. -dir and -format are added."
+        },
+        "gofl.perfPath": {
+          "type": "string", "default": "",
+          "description": "Path of the gofl binary for gofl perf (plan_efficency/gofl-run). Empty: use gofl.path. gofl crash always uses gofl.path."
+        },
+        "gofl.perfArgs": {
+          "type": "array", "items": { "type": "string" }, "default": [],
+          "description": "Extra arguments for gofl perf, e.g. [\"-pkg\", \"./internal/importer\", \"-setup\", \"docker compose up -d\"]. The subcommand, -dir, -out, -bench and -sizes are added."
+        },
+        "gofl.perfBench": { "type": "string", "default": "", "description": "Default benchmark name for \"gofl: Profile benchmark\"." },
+        "gofl.perfSizes": { "type": "string", "default": "100,10000", "description": "Default small and large size for \"gofl: Profile benchmark\"." },
+        "gofl.notes.enabled": { "type": "boolean", "default": true, "description": "Draw the visual notes in the editor." }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "Case": "W3",
+  "Mode": "E1",
+  "Run": 3,
+  "Model": "claude-sonnet-5-5",
+  "Seconds": 30.0042828,
+  "CostUSD": 0.08345860000000001,
+  "Turns": 7,
+  "InputTokens": 173977,
+  "OutputTokens": 1370,
+  "AgentError": "",
+  "Localized": [
+    {
+      "file": "internal/handler/auth.go",
+      "line": 133,
+      "func": "AuthHandler.RefreshToken"
+    }
+  ],
+  "LocFile1": true,
+  "LocFile3": true,
+  "LocFunc1": true,
+  "LocFunc3": true,
+  "Reproduced": true,
+  "OthersPass": true,
+  "TestsEdit": false,
+  "RootCause": true,
+  "Fixed": true,
+  "ChangedFuncs": [
+    "AuthHandler.RefreshToken"
+  ],
+  "Regressed": null,
+  "Diff": "",
+  "AgentOutput": "{\"duration_api_ms\":15327,\"stop_reason\":\"end_turn\",\"session_id\":\"005eff1a-7064-4e19-a9c6-5dcb75017c90\",\"total_cost_usd\":0.08345860000000001,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":13421,\"cache_read_input_tokens\":160546,\"output_tokens\":1370,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13421,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"global\",\"iterations\":[{\"input_tokens\":2,\"output_tokens\":374,\"cache_read_input_tokens\":36759,\"cache_creation_input_tokens\":239,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":239},\"type\":\"message\"}],\"speed\":\"standard\",\"fallback_credit\":null},\"modelUsage\":{\"claude-sonnet-5-5\":{\"inputTokens\":10,\"outputTokens\":1370,\"cacheReadInputTokens\":160546,\"cacheCreationInputTokens\":13421,\"webSearchRequests\":0,\"costUSD\":0.08345860000000001,\"contextWindow\":1000000,\"maxOutputTokens\":128000,\"thinkingTokens\":0,\"cacheCreationEphemeral5mInputTokens\":0,\"cacheCreationEphemeral1hInputTokens\":13421,\"canonicalModel\":\"claude-sonnet-5-5\",\"provider\":\"firstParty\",\"costBasis\":\"list\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"safety_stops\":0,\"is_error\":false,\"num_turns\":7,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"I fixed the `RefreshToken` crash. `go test ./internal/app -run '^TestW3_' -count=1` now passes. The full `go test ./...` run still fails, though, in `internal/app` on `TestW1_CurrentUserDeleted`, which I didn't fix.\\n\\n**Root cause:** `RefreshToken` in `internal/handler/auth.go` decodes the request body into a `map[string]interface{}`. Go's JSON decoder turns every number into `float64`, so the `v.(int)` assertion on `ttl_hours` always panicked.\\n\\n**Fix:** The handler now reads `ttl_hours` as a `float64`. It returns a 400 if the value isn't a whole number, then converts it to `int`.\\n\\nI wrote `gofl-localize.json` in the project root before making the change.\\n\\n**`TestW1_CurrentUserDeleted`:** The failing run panicked on this test, called from `crash_test.go:27`. I only saw the tail of the output, so I don't know its exact error. It looks like a separate crash that was already in the project, not something my change caused. I didn't confirm that by running the test before my edit.\",\"ttft_ms\":2631,\"type\":\"result\",\"duration_ms\":26699,\"uuid\":\"e12cac71-c5db-4b1a-9470-add52159fb58\",\"ttft_stream_ms\":1902,\"time_to_request_ms\":197,\"first_content_frame_ms\":1903,\"queued_turn_count\":0,\"result_index\":0,\"credential_expires_at\":\"2026-12-08T19:42:39.560Z\"}\n",
+  "Notes": null
+}

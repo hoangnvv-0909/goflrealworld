@@ -1,0 +1,17 @@
+{
+  "Hash": "4e3fc1713ed2527e",
+  "Exception": "assignment to entry in nil map",
+  "NoCrashPoint": false,
+  "Frames": [
+    {
+      "Func": "goflsample/crash.(*Registry).Inc",
+      "File": "\u003croot\u003e/crash/crash.go",
+      "Line": 29
+    },
+    {
+      "Func": "goflsample/crash.TestInc",
+      "File": "\u003croot\u003e/crash/crash_test.go",
+      "Line": 25
+    }
+  ]
+}

@@ -1,0 +1,549 @@
+{
+  "Cases": [
+    {
+      "ID": "W1",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/handler/user.go",
+          "line": 147,
+          "func": "goflrealworld/internal/handler.(*UserHandler).GetCurrentUser"
+        },
+        {
+          "file": "internal/middleware/jwt.go",
+          "line": 55,
+          "func": "goflrealworld/internal/app.NewRouter.JWTMiddleware"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        },
+        {
+          "file": "internal/app/crash_test.go",
+          "line": 27,
+          "func": "goflrealworld/internal/app_test.TestW1_CurrentUserDeleted"
+        }
+      ],
+      "Seconds": 18.5666026,
+      "Baseline": {
+        "file": "internal/handler/user.go",
+        "line": 147,
+        "func": "goflrealworld/internal/handler.(*UserHandler).GetCurrentUser"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W2",
+      "Ran": true,
+      "Why": "",
+      "Events": 2,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/utils/slug.go",
+          "line": 28,
+          "func": "goflrealworld/internal/utils.GenerateSlug"
+        },
+        {
+          "file": "internal/service/article.go",
+          "line": 42,
+          "func": "goflrealworld/internal/service.(*ArticleService).CreateArticle"
+        },
+        {
+          "file": "internal/service/article.go",
+          "line": 102,
+          "func": "goflrealworld/internal/service.(*ArticleService).UpdateArticle"
+        },
+        {
+          "file": "internal/handler/article.go",
+          "line": 48,
+          "func": "goflrealworld/internal/handler.(*ArticleHandler).CreateArticle"
+        },
+        {
+          "file": "internal/handler/article.go",
+          "line": 157,
+          "func": "goflrealworld/internal/handler.(*ArticleHandler).UpdateArticle"
+        }
+      ],
+      "Seconds": 13.4226815,
+      "Baseline": {
+        "file": "internal/utils/slug.go",
+        "line": 28,
+        "func": "goflrealworld/internal/utils.GenerateSlug"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W3",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/handler/auth.go",
+          "line": 133,
+          "func": "goflrealworld/internal/handler.(*AuthHandler).RefreshToken"
+        },
+        {
+          "file": "internal/middleware/jwt.go",
+          "line": 55,
+          "func": "goflrealworld/internal/app.NewRouter.JWTMiddleware"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        },
+        {
+          "file": "internal/app/crash_test.go",
+          "line": 47,
+          "func": "goflrealworld/internal/app_test.TestW3_RefreshWithTTL"
+        }
+      ],
+      "Seconds": 5.1134789,
+      "Baseline": {
+        "file": "internal/handler/auth.go",
+        "line": 133,
+        "func": "goflrealworld/internal/handler.(*AuthHandler).RefreshToken"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W4",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/service/tag.go",
+          "line": 47,
+          "func": "goflrealworld/internal/service.(*TagService).GetPopularTags"
+        },
+        {
+          "file": "internal/handler/tag.go",
+          "line": 44,
+          "func": "goflrealworld/internal/handler.(*TagHandler).GetTags"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        },
+        {
+          "file": "internal/app/crash_test.go",
+          "line": 56,
+          "func": "goflrealworld/internal/app_test.TestW4_TagsAfterNewArticle"
+        }
+      ],
+      "Seconds": 4.2249114,
+      "Baseline": {
+        "file": "internal/service/tag.go",
+        "line": 47,
+        "func": "goflrealworld/internal/service.(*TagService).GetPopularTags"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W5",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/service/comment.go",
+          "line": 95,
+          "func": "goflrealworld/internal/service.(*CommentService).DeleteComment"
+        },
+        {
+          "file": "internal/handler/comment.go",
+          "line": 140,
+          "func": "goflrealworld/internal/handler.(*CommentHandler).DeleteComment"
+        },
+        {
+          "file": "internal/middleware/jwt.go",
+          "line": 55,
+          "func": "goflrealworld/internal/app.NewRouter.JWTMiddleware"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        }
+      ],
+      "Seconds": 4.7924357,
+      "Baseline": {
+        "file": "internal/service/comment.go",
+        "line": 95,
+        "func": "goflrealworld/internal/service.(*CommentService).DeleteComment"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W6",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/service/comment.go",
+          "line": 126,
+          "func": "goflrealworld/internal/service.mentions"
+        },
+        {
+          "file": "internal/service/comment.go",
+          "line": 117,
+          "func": "goflrealworld/internal/service.notifyMentions"
+        }
+      ],
+      "Seconds": 4.3100455,
+      "Baseline": {
+        "file": "internal/service/comment.go",
+        "line": 126,
+        "func": "goflrealworld/internal/service.mentions"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W7",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/utils/must.go",
+          "line": 7,
+          "func": "goflrealworld/internal/utils.Must"
+        },
+        {
+          "file": "internal/handler/comment.go",
+          "line": 137,
+          "func": "goflrealworld/internal/handler.(*CommentHandler).DeleteComment"
+        },
+        {
+          "file": "internal/middleware/jwt.go",
+          "line": 55,
+          "func": "goflrealworld/internal/app.NewRouter.JWTMiddleware"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        }
+      ],
+      "Seconds": 4.2821042,
+      "Baseline": {
+        "file": "internal/utils/must.go",
+        "line": 7,
+        "func": "goflrealworld/internal/utils.Must[...]"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W8",
+      "Ran": true,
+      "Why": "",
+      "Events": 4,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/service/article.go",
+          "line": 151,
+          "func": "goflrealworld/internal/service.(*ArticleService).DeleteArticle"
+        },
+        {
+          "file": "internal/service/article.go",
+          "line": 301,
+          "func": "goflrealworld/internal/service.(*ArticleService).FavoriteArticle"
+        },
+        {
+          "file": "internal/service/article.go",
+          "line": 89,
+          "func": "goflrealworld/internal/service.(*ArticleService).UpdateArticle"
+        },
+        {
+          "file": "internal/handler/article.go",
+          "line": 213,
+          "func": "goflrealworld/internal/handler.(*ArticleHandler).DeleteArticle"
+        },
+        {
+          "file": "internal/handler/article.go",
+          "line": 361,
+          "func": "goflrealworld/internal/handler.(*ArticleHandler).FavoriteArticle"
+        }
+      ],
+      "Seconds": 18.4458138,
+      "Baseline": {
+        "file": "internal/service/article.go",
+        "line": 247,
+        "func": "goflrealworld/internal/service.(*ArticleService).buildArticleResponse"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    },
+    {
+      "ID": "W9",
+      "Ran": true,
+      "Why": "",
+      "Events": 1,
+      "Groups": 1,
+      "Top": [
+        {
+          "file": "internal/handler/article.go",
+          "line": 335,
+          "func": "goflrealworld/internal/handler.(*ArticleHandler).GetArticlesFeed"
+        },
+        {
+          "file": "internal/middleware/jwt.go",
+          "line": 55,
+          "func": "goflrealworld/internal/app.NewRouter.JWTMiddleware"
+        },
+        {
+          "file": "internal/app/router.go",
+          "line": 87,
+          "func": "goflrealworld/internal/app.NewRouter"
+        },
+        {
+          "file": "internal/middleware/cors.go",
+          "line": 19,
+          "func": "goflrealworld/internal/middleware.CORS"
+        },
+        {
+          "file": "internal/testutil/testutil.go",
+          "line": 188,
+          "func": "goflrealworld/internal/testutil.(*Env).Do"
+        }
+      ],
+      "Seconds": 4.4908878,
+      "Baseline": {
+        "file": "internal/handler/article.go",
+        "line": 335,
+        "func": "goflrealworld/internal/handler.(*ArticleHandler).GetArticlesFeed"
+      },
+      "LLM": null,
+      "LLMSolve": {}
+    }
+  ],
+  "Ranking": {
+    "File": {
+      "1": {
+        "Hit": 6,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 7,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 7,
+        "Total": 9
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 5,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 6,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 6,
+        "Total": 9
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 4,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 5,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 5,
+        "Total": 9
+      }
+    }
+  },
+  "Baseline": {
+    "File": {
+      "1": {
+        "Hit": 6,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 6,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 6,
+        "Total": 9
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 5,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 5,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 5,
+        "Total": 9
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 4,
+        "Total": 9
+      },
+      "3": {
+        "Hit": 4,
+        "Total": 9
+      },
+      "5": {
+        "Hit": 4,
+        "Total": 9
+      }
+    }
+  },
+  "WithLLM": {
+    "File": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    }
+  },
+  "LLMQuorum": {
+    "File": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Func": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    },
+    "Line": {
+      "1": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "3": {
+        "Hit": 0,
+        "Total": 0
+      },
+      "5": {
+        "Hit": 0,
+        "Total": 0
+      }
+    }
+  },
+  "Ran": 9,
+  "Total": 9,
+  "UsedLLM": false,
+  "LLMRuns": 5,
+  "LLMFailed": 0,
+  "TotalSeconds": 77.6489614
+}
