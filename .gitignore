@@ -1,10 +1,11 @@
-# Chỉ push: plan_crash, plan_efficency, extension, papers
+# Chỉ push: plan_crash, plan_efficency, extension, papers, references
 /*
 !/.gitignore
 !/plan_crash/
 !/plan_efficency/
 !/extension/
 !/papers/
+!/references/
 
 # Build output / dependencies / binaries
 node_modules/
